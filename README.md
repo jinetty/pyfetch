@@ -1,7 +1,6 @@
 # pyfetch
 
-# Dependencies
-* fontawesome package on PyPi
+# Dependency
 * fontawesome on your system
 
 # Installation
