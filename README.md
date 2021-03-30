@@ -18,4 +18,4 @@ Stylish and simple fetch for your terminal.
 * Enjoy!
 
 # Arch package count
-I added this but i am not sure if it works since i dont have a computer that runs arch. If someone counters issues please open a account and open a issue/send a pr.
+I added this but i am not sure if it works since i dont have a computer that runs arch. If someone counters issues dm me at Kreato#5771
