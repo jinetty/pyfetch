@@ -16,6 +16,3 @@ Stylish and simple fetch for your terminal.
 * Type `pip install distro psutil` to install the dependency (for gentoo its `pip install distro psutil --user`)
 * Type `make install` as root
 * Enjoy!
-
-# Arch package count
-I added this but i am not sure if it works since i dont have a computer that runs arch. If someone counters issues dm me at Kreato#5771
