@@ -15,6 +15,6 @@ Stylish and simple fetch for your terminal.
 
 # Installation
 * Clone the repo
-* Type `pip install distro psutil` to install the dependency (for gentoo its `pip install distro psutil --user`)
+* Type `pip install distro psutil` to install the dependency (but for gentoo its `pip install distro psutil --user`)
 * Type `make install` as root
 * Enjoy!
