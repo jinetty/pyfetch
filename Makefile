@@ -6,6 +6,7 @@ PREFIX = /usr/local
 MANPREFIX = $(PREFIX)/share/man
 
 install:
+	pip install distro
 	mkdir -p $(PREFIX)/bin
 	cp -f $(SCRIPT) $(PREFIX)/bin/$(EXEC)
 	chmod 755 $(PREFIX)/bin/$(EXEC)
