@@ -4,6 +4,8 @@
 
 # pyfetch
 
+[![Build Status](https://drone.kreatea.ml/api/badges/kreato/pyfetch/status.svg)](https://drone.kreatea.ml/kreato/pyfetch)
+
 Stylish and simple fetch for your terminal.
 
 # Dependencies
