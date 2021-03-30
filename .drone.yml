@@ -1,0 +1,7 @@
+pipeline:
+  build:
+    image: python:3.9.2-alpine
+    commands:
+      - pip install psutil distro
+      - make install
+      - pyfetch
