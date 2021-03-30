@@ -9,7 +9,7 @@
 #         \|___|/
 # Made by Kreato
 # Licensed Under GPL3-Or-Later
-import platform, psutil, os, getpass, shutil
+import platform, psutil, os, getpass, shutil, distro
 uname = platform.uname()
 cpu = psutil.cpu_percent()
 username = getpass.getuser()
@@ -24,6 +24,17 @@ print(f"   {username}@{uname.node}")
 print(f"   {uname.processor} ({cpu}%) ")
 print(f"   {used}GiB / {total}GiB ({percent_used}%)")
 if os.name == 'posix':
-    print(f"  GNU\{uname.system} {uname.release}")
+    distro = distro.linux_distribution()
+    result = ' '.join(map(str, distro)) 
+    print(f"   {result} {uname.release}")
 elif os.name == 'nt':
     print(f"   {uname.system} {uname.release}")
+
+if 'Gentoo' in distro:
+    import portage
+    packages = len(portage.db["/"]["vartree"].dbapi.cpv_all())
+    print(f"   {packages}")
+
+if 'Arch' in distro:
+    packages = os.popen('pacman -Q | wc -l').read()
+    print(f"   {packages}")
