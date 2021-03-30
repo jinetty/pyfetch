@@ -1,7 +1,9 @@
 <p align="left">
 <img src="./assets/pyfetch.png">
 </p>
+
 # pyfetch
+
 Stylish and simple fetch for your terminal.
 
 # Dependencies
