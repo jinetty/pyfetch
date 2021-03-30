@@ -35,6 +35,7 @@ if 'Gentoo' in distro:
     packages = len(portage.db["/"]["vartree"].dbapi.cpv_all())
     print(f"   {packages}")
 
+# Experimental
 if 'Arch' in distro:
     packages = os.popen('pacman -Q | wc -l').read()
     print(f"   {packages}")
