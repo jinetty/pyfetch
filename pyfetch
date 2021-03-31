@@ -64,16 +64,17 @@ if args.userhostname == True:
 if "SHELL" in os.environ and args.terminal == True:
     shell = os.environ['SHELL']
     term  = os.environ['TERM'] # hope this doesnt cause any issues
-    terminal = print(f"   {shell} {term}"
+    terminal = print(f"   {shell} {term}")
+    sys.exit()
 
-if os.name == 'posix' and args.packages == True:
+if os.name == 'posix' and args.operatingsystem == True:
     wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
     print(f"   {wm}")
     sys.exit()
 
 if os.name == 'nt' and args.operatingsystem == True:
     print(f"   {uname.system} {uname.release}")
-    sys.exit
+    sys.exit()
 elif os.name == 'posix' and args.operatingsystem == True:
     import distro
     distro = distro.linux_distribution()
