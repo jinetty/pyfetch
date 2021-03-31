@@ -17,6 +17,8 @@ uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/$(SHORTEXEC)
 
 reinstall:
+	rm -f $(DESTDIR)$(PREFIX)/bin/$(EXEC)
+	rm -f $(DESTDIR)$(PREFIX)/bin/$(SHORTEXEC)
 	mkdir -p $(PREFIX)/bin
 	cp -f $(SCRIPT) $(PREFIX)/bin/$(EXEC)
 	chmod 755 $(PREFIX)/bin/$(EXEC)
