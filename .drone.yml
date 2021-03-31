@@ -1,7 +1,6 @@
-kind: pipeline
-name: default
-steps:
-  image: python:windowsservercore-1809
-  commands:
+pipeline:
+  build:
+    image: python:windowsservercore-ltsc2016
+    commands:
     - pip install psutil distro
     - python pyfetch
