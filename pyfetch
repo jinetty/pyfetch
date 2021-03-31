@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # ________  ___    ___ ________ _______  _________  ________  ___  ___
-#|\   __  \|\  \  /  /|\  _____\\  ___ \|\___   ___\\   ____\|\  \|\  \
-#\ \  \|\  \ \  \/  / | \  \__/\ \   __/\|___ \  \_\ \  \___|\ \  \\\  \
+# |\   __  \|\  \  /  /|\  _____\\  ___ \|\___   ___\\   ____\|\  \|\  \
+# \ \  \|\  \ \  \/  / | \  \__/\ \   __/\|___ \  \_\ \  \___|\ \  \\\  \
 # \ \   ____\ \    / / \ \   __\\ \  \_|/__  \ \  \ \ \  \    \ \   __  \
 #  \ \  \___|\/  /  /   \ \  \_| \ \  \_|\ \  \ \  \ \ \  \____\ \  \ \  \
 #   \ \__\ __/  / /      \ \__\   \ \_______\  \ \__\ \ \_______\ \__\ \__\
@@ -9,19 +9,39 @@
 #         \|___|/
 # Made by Kreato
 # Licensed Under GPL3-Or-Later
-import sys,platform, psutil, os, getpass, shutil
-from argparse import ArgumentParser # import our shit
-parser = ArgumentParser(prog='pyfetch') # ArgumentParser
-parser.add_argument('-c', '--cpu', help="Cpu.", action='store_true') # Add argument
-parser.add_argument('-d', '--disk', help="Disk usage.", action='store_true') # Add argument
-parser.add_argument('-m', '--memory', help="Memory.", action='store_true') # Add argument
-parser.add_argument('-uh', '--userhostname', help="User and hostname.", action='store_true') # Add argument
-parser.add_argument('-p', '--packages', help="Packages.", action='store_true') # Add argument
-parser.add_argument('-os', '--operatingsystem', help="Show the OS release.", action='store_true') # Add argument
-parser.add_argument('-t', '--terminal', help="Show terminal.", action='store_true') # Add argument
-parser.add_argument('-wm', '--windowmanager', help="Show the window manager.", action='store_true') # Add argument
-args = parser.parse_args() # Args
-def StinkUsingWindows():
+
+# import stuffs
+import sys, platform, psutil, os, getpass, shutil
+
+# get the args
+args = sys.argv[1:]
+
+# if needed print the help!
+if "-h" in args or "--help" in args:
+    # enjoy this lovely table made out of entirely unicode chars
+    print('''pyfetch - a lighter and faster neofetch.
+╔═════╦═══════════════════╦═════════════════════════════════════╗
+║ -c  ║ --cpu             ║ CPU info & usage                    ║
+╠═════╬═══════════════════╬═════════════════════════════════════╣
+║ -d  ║ --disk            ║ Disk usage                          ║
+╠═════╬═══════════════════╬═════════════════════════════════════╣
+║ -m  ║ --memory          ║ RAM usage                           ║
+╠═════╬═══════════════════╬═════════════════════════════════════╣
+║ -uh ║ --userhostname    ║ user@hostname                       ║
+╠═════╬═══════════════════╬═════════════════════════════════════╣
+║ -p  ║ --packages        ║ Installed package count             ║
+╠═════╬═══════════════════╬═════════════════════════════════════╣
+║ -os ║ --operatingsystem ║ Which OS you have                   ║
+╠═════╬═══════════════════╬═════════════════════════════════════╣
+║ -t  ║ --terminal        ║ What type of terminal you are using ║
+╠═════╬═══════════════════╬═════════════════════════════════════╣
+║ -wm ║ --windowmanager   ║ Your current window manager         ║
+╚═════╩═══════════════════╩═════════════════════════════════════╝''')
+    exit()
+
+
+# define important functions
+def package_count():
     # Experimental
     if 'Debian' in distro:
         packages = os.popen('apt list --installed | wc -l').read()
@@ -36,66 +56,106 @@ def StinkUsingWindows():
     if 'Arch' in distro:
         packages = os.popen('pacman -Q | wc -l').read()
         print(f" {packages}")
+
+
+def pcpu():
+    print(f"   {uname.processor} ({cpu}%) ")
+
+
+def pdisk():
+    print(f"   {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+
+
+def pmemory():
+    print(f"   {used}GiB / {total}GiB ({percent_used}%)")
+
+
+def puserhost():
+    print(f"   {username}@{uname.node}")
+
+
+def ppackages():
+    if os.name == 'posix':
+        import distro
+
+        current_distro = distro.linux_distribution()
+        package_count()
+
+
+def pos():
+    if os.name == 'nt':
+        print(f"   {uname.system} {uname.release}")
+    elif os.name == 'posix':
+        import distro
+
+        distro = distro.linux_distribution()
+        result = ' '.join(map(str, distro))
+        print(f"   {result} {uname.release}")
+
+
+def pterm():
+    if "SHELL" in os.environ:
+        shell = os.environ['SHELL']
+        term = os.environ['TERM']  # hope this doesnt cause any issues
+        print(f"   {shell} {term}")
+
+
+def pwm():
+    if os.name == 'posix':
+        wm = os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
+        print(f"   {wm}")
+
+
+# get system info n stuff
 uname = platform.uname()
 cpu = psutil.cpu_percent()
 username = getpass.getuser()
 ram = psutil.virtual_memory()
-used = ram.used // (2**30)
-total = ram.total // (2**30)
+used = ram.used // (2 ** 30)
+total = ram.total // (2 ** 30)
 totaldisk, useddisk, freedisk = shutil.disk_usage("/")
 diskpercent_used = round(useddisk / totaldisk * 100, 2)
 percent_used = round(ram.used / ram.total * 100, 2)
-if args.cpu == True:
-    print(f"   {uname.processor} ({cpu}%) ")
 
-if args.disk == True:
-    print(f"   {useddisk // (2**30)}GiB / {freedisk // (2**30)}GiB ({diskpercent_used}%)")
+# Yellowsink's super simple argument parsing. Who needs argparse when you have this???
+for arg in args:
+    if arg == "-c" or arg == "--cpu":
+        pcpu()
+    elif arg == "-d" or arg == "--disk":
+        pdisk()
+    elif arg == "-m" or arg == "--memory":
+        pmemory()
+    elif arg == "-uh" or arg == "--userhostname":
+        puserhost()
+    elif arg == "-p" or arg == "--packages":
+        ppackages()
+    elif arg == "-os" or arg == "--operatingsystem":
+        pos()
+    elif arg == "-t" or arg == "--terminal":
+        pterm()
+    elif arg == "-wm" or arg == "--windowmanager":
+        pwm()
 
-if args.memory == True:
-    print(f"   {used}GiB / {total}GiB ({percent_used}%)")
-
-if os.name == 'posix' and args.packages == True:
-    import distro
-    distro = distro.linux_distribution()
-    result = ' '.join(map(str, distro))
-    StinkUsingWindows()
-
-if args.userhostname == True:
-    print(f"   {username}@{uname.node}")
-
-if "SHELL" in os.environ and args.terminal == True:
-    shell = os.environ['SHELL']
-    term  = os.environ['TERM'] # hope this doesnt cause any issues
-    terminal = print(f"   {shell} {term}")
-
-if os.name == 'posix' and args.windowmanager == True and shutil.which("wmctrl"):
-    wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
-    print(f"   {wm}")
-
-if os.name == 'nt' and args.operatingsystem == True:
-    print(f"   {uname.system} {uname.release}")
-elif os.name == 'posix' and args.operatingsystem == True:
-    import distro
-    distro = distro.linux_distribution()
-    result = ' '.join(map(str, distro))
-    print(f"   {result} {uname.release}")
-if len(sys.argv) == 1:
-    print(f"   {useddisk // (2**30)}GiB / {freedisk // (2**30)}GiB ({diskpercent_used}%)")
+if len(args) == 0:
+    print(f"   {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
     print(f"   {username}@{uname.node}")
     print(f"   {uname.processor} ({cpu}%) ")
     print(f"   {used}GiB / {total}GiB ({percent_used}%)")
-if "SHELL" in os.environ and len(sys.argv) == 1:
+
+if "SHELL" in os.environ and len(args) == 0:
     shell = os.environ['SHELL']
-    term  = os.environ['TERM'] # hope this doesnt cause any issues
-    terminal = print(f"   {shell} {term}")
+    term = os.environ['TERM']  # hope this doesnt cause any issues
+    print(f"   {shell} {term}")
+
 if os.name == 'posix' and len(sys.argv) == 1:
     import distro
+
     distro = distro.linux_distribution()
     result = ' '.join(map(str, distro))
-    print(f"   {result} {uname.release}")
-    FuckYouWindows()
-if os.name == 'posix' and shutil.which("wmctrl") and len(sys.argv) == 1:
-    wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
+    wm = os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
     print(f"   {wm}")
-elif os.name == 'nt' and len(sys.argv) == 1:
-    name = print(f"   {uname.system} {uname.release}") 
+    print(f"   {result} {uname.release}")
+    package_count()
+
+elif os.name == 'nt' and len(args) == 0:
+    print(f"   {uname.system} {uname.release}")
