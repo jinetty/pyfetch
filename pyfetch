@@ -23,12 +23,13 @@ print(f"   {useddisk // (2**30)}GiB / {freedisk // (2**30)}GiB ({diskpercent_
 print(f"   {username}@{uname.node}")
 print(f"   {uname.processor} ({cpu}%) ")
 print(f"   {used}GiB / {total}GiB ({percent_used}%)")
+if os.environ['SHELL'] is not None:
+    shell = os.environ['SHELL']
+    print(f"   {shell}")
 if os.name == 'posix':
     distro = distro.linux_distribution()
     result = ' '.join(map(str, distro))
-    shell = os.environ['SHELL']
     wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
-    print(f"   {shell}")
     print(f"   {wm}")
     print(f"   {result} {uname.release}")
 elif os.name == 'nt':
