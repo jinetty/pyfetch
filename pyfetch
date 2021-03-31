@@ -68,7 +68,7 @@ if "SHELL" in os.environ and args.terminal == True:
     term  = os.environ['TERM'] # hope this doesnt cause any issues
     terminal = print(f"   {shell} {term}")
 
-if os.name == 'posix' and args.windowmanager == True:
+if os.name == 'posix' and args.windowmanager == True and shutil.which("wmctrl"):
     wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
     print(f"   {wm}")
 
@@ -92,9 +92,10 @@ if os.name == 'posix' and len(sys.argv) == 1:
     import distro
     distro = distro.linux_distribution()
     result = ' '.join(map(str, distro))
-    wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
-    de = print(f"   {wm}")
-    name = print(f"   {result} {uname.release}")
+    print(f"   {result} {uname.release}")
     FuckYouWindows()
+if os.name == 'posix' and shutil.which("wmctrl") and len(sys.argv) == 1:
+    wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
+    print(f"   {wm}")
 elif os.name == 'nt' and len(sys.argv) == 1:
     name = print(f"   {uname.system} {uname.release}") 
