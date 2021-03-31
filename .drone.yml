@@ -1,6 +1,8 @@
 pipeline:
   build:
-    image: python:windowsservercore-ltsc2016
+  os: windows
+  arch: amd64
+  version: 1809
     commands:
     - pip install psutil distro
     - python pyfetch
