@@ -10,7 +10,7 @@ install:
 	mkdir -p $(PREFIX)/bin
 	cp -f $(SCRIPT) $(PREFIX)/bin/$(EXEC)
 	chmod 755 $(PREFIX)/bin/$(EXEC)
-	ln -s $(PREFIX)/bin/$(SHORTEXEC)
+	ln -s $(PREFIX)/bin/$(EXEC) $(PREFIX)/bin/$(SHORTEXEC)
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/$(EXEC)
