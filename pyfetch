@@ -9,7 +9,16 @@
 #         \|___|/
 # Made by Kreato
 # Licensed Under GPL3-Or-Later
-import platform, psutil, os, getpass, shutil
+import sys,platform, psutil, os, getpass, shutil
+from argparse import ArgumentParser # import our shit
+parser = ArgumentParser(prog='pyfetch') # ArgumentParser
+parser.add_argument('-c', '--cpu', help="Cpu.", action='store_true') # Add argument
+parser.add_argument('-d', '--disk', help="Disk usage.", action='store_true') # Add argument
+parser.add_argument('-m', '--memory', help="Memory.", action='store_true') # Add argument
+parser.add_argument('-uh', '--userhostname', help="User and hostname.", action='store_true') # Add argument
+parser.add_argument('-p', '--packages', help="Packages.", action='store_true') # Add argument
+parser.add_argument('-os', '--operatingsystem', help="Show the OS release.", action='store_true') # Add argument
+args = parser.parse_args() # Args
 def FuckYouWindows():
     # Experimental
     if 'Debian' in distro:
@@ -34,6 +43,38 @@ total = ram.total // (2**30)
 totaldisk, useddisk, freedisk = shutil.disk_usage("/")
 diskpercent_used = round(useddisk / totaldisk * 100, 2)
 percent_used = round(ram.used / ram.total * 100, 2)
+
+if args.cpu == True:
+    print(f"   {uname.processor} ({cpu}%) ")
+    sys.exit()
+
+if args.disk == True:
+    print(f"   {useddisk // (2**30)}GiB / {freedisk // (2**30)}GiB ({diskpercent_used}%)")
+    sys.exit()
+
+if args.memory == True:
+    print(f"   {used}GiB / {total}GiB ({percent_used}%)")
+    sys.exit()
+
+if args.userhostname == True:
+    print(f"   {username}@{uname.node}")
+    sys.exit()
+
+if os.name == 'posix' and args.packages == True:
+    wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
+    print(f"   {wm}")
+    sys.exit()
+
+if os.name == 'nt' and args.operatingsystem == True:
+    print(f"   {uname.system} {uname.release}")
+    sys.exit
+elif os.name == 'posix':
+    import distro
+    distro = distro.linux_distribution()
+    result = ' '.join(map(str, distro))
+    print(f"   {result} {uname.release}")
+    sys.exit()
+
 print(f"   {useddisk // (2**30)}GiB / {freedisk // (2**30)}GiB ({diskpercent_used}%)")
 print(f"   {username}@{uname.node}")
 print(f"   {uname.processor} ({cpu}%) ")
@@ -41,14 +82,14 @@ print(f"   {used}GiB / {total}GiB ({percent_used}%)")
 if "SHELL" in os.environ:
     shell = os.environ['SHELL']
     term  = os.environ['TERM'] # hope this doesnt cause any issues
-    print(f"   {shell} {term}")
+    terminal = print(f"   {shell} {term}")
 if os.name == 'posix':
     import distro
     distro = distro.linux_distribution()
     result = ' '.join(map(str, distro))
     wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
-    print(f"   {wm}")
-    print(f"   {result} {uname.release}")
+    de = print(f"   {wm}")
+    name = print(f"   {result} {uname.release}")
     FuckYouWindows()
 elif os.name == 'nt':
-    print(f"   {uname.system} {uname.release}") 
+    name = print(f"   {uname.system} {uname.release}") 
