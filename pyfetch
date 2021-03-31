@@ -36,6 +36,13 @@ if os.name == 'posix':
 elif os.name == 'nt':
     print(f"   {uname.system} {uname.release}")
 
+
+# Experimental
+if 'Debian' or 'Ubuntu' in distro:
+    packages = os.popen('apt list --installed | wc -l').read()
+    print(f"   {packages}")
+
+
 if 'Gentoo' in distro:
     import portage
     packages = len(portage.db["/"]["vartree"].dbapi.cpv_all())
