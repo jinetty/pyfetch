@@ -21,7 +21,7 @@ parser.add_argument('-os', '--operatingsystem', help="Show the OS release.", act
 parser.add_argument('-t', '--terminal', help="Show terminal.", action='store_true') # Add argument
 parser.add_argument('-wm', '--windowmanager', help="Show the window manager.", action='store_true') # Add argument
 args = parser.parse_args() # Args
-def FuckYouWindows():
+def StinkUsingWindows():
     # Experimental
     if 'Debian' in distro:
         packages = os.popen('apt list --installed | wc -l').read()
@@ -58,7 +58,7 @@ if os.name == 'posix' and args.packages == True:
     import distro
     distro = distro.linux_distribution()
     result = ' '.join(map(str, distro))
-    FuckYouWindows()
+    StinkUsingWindows()
 
 if args.userhostname == True:
     print(f"   {username}@{uname.node}")
