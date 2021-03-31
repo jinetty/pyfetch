@@ -1,8 +1,15 @@
-pipeline:
-  build:
+ind: pipeline
+type: docker
+name: default
+
+platform:
   os: windows
   arch: amd64
-  version: 1809
-    commands:
+  version: 1903
+
+steps:
+- name: build
+  image: python
+  commands:
     - pip install psutil distro
     - python pyfetch
