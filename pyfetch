@@ -69,6 +69,8 @@ def pcpu():
         current_distro = distro.linux_distribution()
         if 'Gentoo' in current_distro:
             print(Fore.MAGENTA + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)")
+        elif 'Arch' in current_distro:
+            print(Fore.BLUE + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)")
         else:
             print("   {uname.processor} ({cpu}%)")
 
@@ -79,6 +81,8 @@ def pdisk():
         current_distro = distro.linux_distribution()
         if 'Gentoo' in current_distro:
             print(Fore.MAGENTA + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+        elif 'Arch' in current_distro:
+            print(Fore.BLUE + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
         else:
             print(f"   {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
 
@@ -89,6 +93,8 @@ def pmemory():
         current_distro = distro.linux_distribution()
         if 'Gentoo' in current_distro:
             print(Fore.MAGENTA + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
+        elif 'Arch' in current_distro:
+            print(Fore.BLUE + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
         else:
             print(f"   {used}GiB / {total}GiB ({percent_used}%)")
 
@@ -99,6 +105,8 @@ def puserhost():
         current_distro = distro.linux_distribution()
         if 'Gentoo' in current_distro:
             print(Fore.MAGENTA + " " + Fore.WHITE + f"  {username}@{uname.node}")
+        elif 'Arch' in current_distro:
+            print(Fore.BLUE + " " + Fore.WHITE + f"  {username}@{uname.node}")
         else:
             print(f"   {username}@{uname.node}")
 
@@ -111,6 +119,8 @@ def pos():
         result = ' '.join(map(str, distro))
     if 'Gentoo' in distro:
         print(Fore.MAGENTA + " " + Fore.WHITE + f"  {result} {uname.release}")
+    elif 'Arch' in current_distro:
+        print(Fore.BLUE + " " + Fore.WHITE + f"  {result} {uname.release}")
     else:
         print("  {result} {uname.release}")
 
@@ -123,6 +133,8 @@ def pterm():
             current_distro = distro.linux_distribution()
             if 'Gentoo' in current_distro:
                 print( Fore.MAGENTA + "  " + Fore.WHITE + f"  {shell} {term}")
+            elif 'Arch' in current_distro:
+                print( Fore.BLUE + "  " + Fore.WHITE + f"  {shell} {term}")
             else:
                 print(f"   {shell} {term}")
 def pwm():
@@ -132,6 +144,8 @@ def pwm():
         distro = distro.linux_distribution()
         if 'Gentoo' in distro:
             print(Fore.MAGENTA + " " + Fore.WHITE +  f"  {wm}")
+        elif 'Arch' in current_distro:
+            print(Fore.BLUE + " " + Fore.WHITE +  f"  {wm}")
         else:
             print(f"   {wm}")
 
