@@ -19,6 +19,7 @@ parser.add_argument('-uh', '--userhostname', help="User and hostname.", action='
 parser.add_argument('-p', '--packages', help="Packages.", action='store_true') # Add argument
 parser.add_argument('-os', '--operatingsystem', help="Show the OS release.", action='store_true') # Add argument
 parser.add_argument('-t', '--terminal', help="Show terminal.", action='store_true') # Add argument
+parser.add_argument('-wm', '--windowmanager', help="Show the window manager.", action='store_true') # Add argument
 args = parser.parse_args() # Args
 def FuckYouWindows():
     # Experimental
@@ -57,6 +58,13 @@ if args.memory == True:
     print(f"   {used}GiB / {total}GiB ({percent_used}%)")
     sys.exit()
 
+if os.name == 'posix' and args.packages == True:
+    import distro
+    distro = distro.linux_distribution()
+    result = ' '.join(map(str, distro))
+    FuckYouWindows()
+    sys.exit()
+
 if args.userhostname == True:
     print(f"   {username}@{uname.node}")
     sys.exit()
@@ -67,7 +75,7 @@ if "SHELL" in os.environ and args.terminal == True:
     terminal = print(f"   {shell} {term}")
     sys.exit()
 
-if os.name == 'posix' and args.operatingsystem == True:
+if os.name == 'posix' and args.windowmanager == True:
     wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
     print(f"   {wm}")
     sys.exit()
