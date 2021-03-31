@@ -42,18 +42,21 @@ if "-h" in args or "--help" in args:
 
 # define important functions
 def package_count():
+    if os.name == 'posix':
+        import distro
+        current_distro = distro.linux_distribution()
     # Experimental
-    if 'Debian' in distro:
+    if 'Debian' in current_distro:
         packages = os.popen('apt list --installed | wc -l').read()
         print(f"   {packages}")
 
-    if 'Gentoo' in distro:
+    if 'Gentoo' in current_distro:
         import portage
         packages = len(portage.db["/"]["vartree"].dbapi.cpv_all())
         print(f"   {packages}")
 
     # Experimental
-    if 'Arch' in distro:
+    if 'Arch' in current_distro:
         packages = os.popen('pacman -Q | wc -l').read()
         print(f" {packages}")
 
@@ -73,21 +76,11 @@ def pmemory():
 def puserhost():
     print(f"   {username}@{uname.node}")
 
-
-def ppackages():
-    if os.name == 'posix':
-        import distro
-
-        current_distro = distro.linux_distribution()
-        package_count()
-
-
 def pos():
     if os.name == 'nt':
         print(f"   {uname.system} {uname.release}")
     elif os.name == 'posix':
         import distro
-
         distro = distro.linux_distribution()
         result = ' '.join(map(str, distro))
         print(f"   {result} {uname.release}")
@@ -116,7 +109,6 @@ total = ram.total // (2 ** 30)
 totaldisk, useddisk, freedisk = shutil.disk_usage("/")
 diskpercent_used = round(useddisk / totaldisk * 100, 2)
 percent_used = round(ram.used / ram.total * 100, 2)
-
 # Yellowsink's super simple argument parsing. Who needs argparse when you have this???
 for arg in args:
     if arg == "-c" or arg == "--cpu":
@@ -128,7 +120,7 @@ for arg in args:
     elif arg == "-uh" or arg == "--userhostname":
         puserhost()
     elif arg == "-p" or arg == "--packages":
-        ppackages()
+        package_count()
     elif arg == "-os" or arg == "--operatingsystem":
         pos()
     elif arg == "-t" or arg == "--terminal":
