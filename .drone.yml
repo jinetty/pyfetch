@@ -1,8 +1,7 @@
 kind: pipeline
 name: default
 steps:
-- name: pyfetch
-  image: python:3.9.2-windowsservercore-1809
+  image: python:windowsservercore-1809
   commands:
     - pip install psutil distro
     - python pyfetch
