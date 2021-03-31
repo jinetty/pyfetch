@@ -9,7 +9,7 @@
 #         \|___|/
 # Made by Kreato
 # Licensed Under GPL3-Or-Later
-import platform, psutil, os, getpass, shutil, distro
+import platform, psutil, os, getpass, shutil
 uname = platform.uname()
 cpu = psutil.cpu_percent()
 username = getpass.getuser()
@@ -28,6 +28,7 @@ if "SHELL" in os.environ:
     term  = os.environ['TERM'] # hope this doesnt cause any issues
     print(f"   {shell} {term}")
 if os.name == 'posix':
+    import distro
     distro = distro.linux_distribution()
     result = ' '.join(map(str, distro))
     wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
