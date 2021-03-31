@@ -68,7 +68,7 @@ if os.name == 'posix' and args.packages == True:
 if os.name == 'nt' and args.operatingsystem == True:
     print(f"   {uname.system} {uname.release}")
     sys.exit
-elif os.name == 'posix':
+elif os.name == 'posix' and args.operatingsystem == True:
     import distro
     distro = distro.linux_distribution()
     result = ' '.join(map(str, distro))
