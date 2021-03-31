@@ -45,60 +45,50 @@ total = ram.total // (2**30)
 totaldisk, useddisk, freedisk = shutil.disk_usage("/")
 diskpercent_used = round(useddisk / totaldisk * 100, 2)
 percent_used = round(ram.used / ram.total * 100, 2)
-
 if args.cpu == True:
     print(f"   {uname.processor} ({cpu}%) ")
-    sys.exit()
 
 if args.disk == True:
     print(f"   {useddisk // (2**30)}GiB / {freedisk // (2**30)}GiB ({diskpercent_used}%)")
-    sys.exit()
 
 if args.memory == True:
     print(f"   {used}GiB / {total}GiB ({percent_used}%)")
-    sys.exit()
 
 if os.name == 'posix' and args.packages == True:
     import distro
     distro = distro.linux_distribution()
     result = ' '.join(map(str, distro))
     FuckYouWindows()
-    sys.exit()
 
 if args.userhostname == True:
     print(f"   {username}@{uname.node}")
-    sys.exit()
 
 if "SHELL" in os.environ and args.terminal == True:
     shell = os.environ['SHELL']
     term  = os.environ['TERM'] # hope this doesnt cause any issues
     terminal = print(f"   {shell} {term}")
-    sys.exit()
 
 if os.name == 'posix' and args.windowmanager == True:
     wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
     print(f"   {wm}")
-    sys.exit()
 
 if os.name == 'nt' and args.operatingsystem == True:
     print(f"   {uname.system} {uname.release}")
-    sys.exit()
 elif os.name == 'posix' and args.operatingsystem == True:
     import distro
     distro = distro.linux_distribution()
     result = ' '.join(map(str, distro))
     print(f"   {result} {uname.release}")
-    sys.exit()
-
-print(f"   {useddisk // (2**30)}GiB / {freedisk // (2**30)}GiB ({diskpercent_used}%)")
-print(f"   {username}@{uname.node}")
-print(f"   {uname.processor} ({cpu}%) ")
-print(f"   {used}GiB / {total}GiB ({percent_used}%)")
-if "SHELL" in os.environ:
+if len(sys.argv) == 1:
+    print(f"   {useddisk // (2**30)}GiB / {freedisk // (2**30)}GiB ({diskpercent_used}%)")
+    print(f"   {username}@{uname.node}")
+    print(f"   {uname.processor} ({cpu}%) ")
+    print(f"   {used}GiB / {total}GiB ({percent_used}%)")
+if "SHELL" in os.environ and len(sys.argv) == 1:
     shell = os.environ['SHELL']
     term  = os.environ['TERM'] # hope this doesnt cause any issues
     terminal = print(f"   {shell} {term}")
-if os.name == 'posix':
+if os.name == 'posix' and len(sys.argv) == 1:
     import distro
     distro = distro.linux_distribution()
     result = ' '.join(map(str, distro))
@@ -106,5 +96,5 @@ if os.name == 'posix':
     de = print(f"   {wm}")
     name = print(f"   {result} {uname.release}")
     FuckYouWindows()
-elif os.name == 'nt':
+elif os.name == 'nt' and len(sys.argv) == 1:
     name = print(f"   {uname.system} {uname.release}") 
