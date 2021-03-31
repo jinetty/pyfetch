@@ -16,8 +16,6 @@ username = getpass.getuser()
 ram = psutil.virtual_memory()
 used = ram.used // (2**30)
 total = ram.total // (2**30)
-shell = os.environ['SHELL']
-wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
 totaldisk, useddisk, freedisk = shutil.disk_usage("/")
 diskpercent_used = round(useddisk / totaldisk * 100, 2)
 percent_used = round(ram.used / ram.total * 100, 2)
@@ -25,11 +23,13 @@ print(f"   {useddisk // (2**30)}GiB / {freedisk // (2**30)}GiB ({diskpercent_
 print(f"   {username}@{uname.node}")
 print(f"   {uname.processor} ({cpu}%) ")
 print(f"   {used}GiB / {total}GiB ({percent_used}%)")
-print(f"   {shell}")
-print(f"   {wm}")
 if os.name == 'posix':
     distro = distro.linux_distribution()
-    result = ' '.join(map(str, distro)) 
+    result = ' '.join(map(str, distro))
+    shell = os.environ['SHELL']
+    wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
+    print(f"   {shell}")
+    print(f"   {wm}")
     print(f"   {result} {uname.release}")
 elif os.name == 'nt':
     print(f"   {uname.system} {uname.release}")
