@@ -38,7 +38,7 @@ elif os.name == 'nt':
 
 
 # Experimental
-if 'Debian' or 'Ubuntu' in distro:
+if 'Debian' in distro:
     packages = os.popen('apt list --installed | wc -l').read()
     print(f"   {packages}")
 
