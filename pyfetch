@@ -23,7 +23,7 @@ print(f"   {useddisk // (2**30)}GiB / {freedisk // (2**30)}GiB ({diskpercent_
 print(f"   {username}@{uname.node}")
 print(f"   {uname.processor} ({cpu}%) ")
 print(f"   {used}GiB / {total}GiB ({percent_used}%)")
-if os.environ['SHELL'] is not None:
+if "SHELL" in os.environ:
     shell = os.environ['SHELL']
     print(f"   {shell}")
 if os.name == 'posix':
