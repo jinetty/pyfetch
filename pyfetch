@@ -45,14 +45,12 @@ def package_count():
     if os.name == 'posix':
         import distro
         current_distro = distro.linux_distribution()
-    # Experimental
     if 'Debian' in current_distro:
         packages = os.popen('apt list --installed | wc -l').read()
         print(f"   {packages}")
 
     if 'Gentoo' in current_distro:
-        import portage
-        packages = len(portage.db["/"]["vartree"].dbapi.cpv_all())
+        packages = os.popen("ls -d /var/db/pkg/*/* | wc -l | awk '{printf $1 }'").read() 
         print(f"   {packages}")
 
     # Experimental
