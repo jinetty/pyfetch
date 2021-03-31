@@ -18,6 +18,7 @@ parser.add_argument('-m', '--memory', help="Memory.", action='store_true') # Add
 parser.add_argument('-uh', '--userhostname', help="User and hostname.", action='store_true') # Add argument
 parser.add_argument('-p', '--packages', help="Packages.", action='store_true') # Add argument
 parser.add_argument('-os', '--operatingsystem', help="Show the OS release.", action='store_true') # Add argument
+parser.add_argument('-t', '--terminal', help="Show terminal.", action='store_true') # Add argument
 args = parser.parse_args() # Args
 def FuckYouWindows():
     # Experimental
@@ -59,6 +60,11 @@ if args.memory == True:
 if args.userhostname == True:
     print(f"   {username}@{uname.node}")
     sys.exit()
+
+if "SHELL" in os.environ and args.terminal == True:
+    shell = os.environ['SHELL']
+    term  = os.environ['TERM'] # hope this doesnt cause any issues
+    terminal = print(f"   {shell} {term}"
 
 if os.name == 'posix' and args.packages == True:
     wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
