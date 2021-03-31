@@ -12,6 +12,10 @@
 
 # import stuffs
 import sys, platform, psutil, os, getpass, shutil
+from colorama import init, Fore, Back, Style
+
+# Setup colorama
+init()
 
 # get the args
 args = sys.argv[1:]
@@ -47,32 +51,56 @@ def package_count():
         current_distro = distro.linux_distribution()
     if 'Debian' in current_distro:
         packages = os.popen('apt list --installed | wc -l').read()
-        print(f"   {packages}")
+        print(Fore.RED + " " + Fore.WHITE + f"  {packages}")
 
     if 'Gentoo' in current_distro:
         packages = os.popen("ls -d /var/db/pkg/*/* | wc -l | awk '{printf $1 }'").read() 
-        print(f"   {packages}")
+        print(Fore.MAGENTA + " " + Fore.WHITE + f"  {packages}")
 
     # Experimental
     if 'Arch' in current_distro:
         packages = os.popen('pacman -Q | wc -l').read()
-        print(f" {packages}")
+        print(Fore.BLUE + " " + Fore.WHITE + f"  {packages}")
 
 
 def pcpu():
-    print(f"   {uname.processor} ({cpu}%) ")
+    if os.name == 'posix':
+        import distro
+        current_distro = distro.linux_distribution()
+        if 'Gentoo' in current_distro:
+            print(Fore.MAGENTA + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)")
+        else:
+            print("   {uname.processor} ({cpu}%)")
 
 
 def pdisk():
-    print(f"   {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+    if os.name == 'posix':
+        import distro
+        current_distro = distro.linux_distribution()
+        if 'Gentoo' in current_distro:
+            print(Fore.MAGENTA + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+        else:
+            print(f"   {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
 
 
 def pmemory():
-    print(f"   {used}GiB / {total}GiB ({percent_used}%)")
+    if os.name == 'posix':
+        import distro
+        current_distro = distro.linux_distribution()
+        if 'Gentoo' in current_distro:
+            print(Fore.MAGENTA + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
+        else:
+            print(f"   {used}GiB / {total}GiB ({percent_used}%)")
 
 
 def puserhost():
-    print(f"   {username}@{uname.node}")
+    if os.name == 'posix':
+        import distro
+        current_distro = distro.linux_distribution()
+        if 'Gentoo' in current_distro:
+            print(Fore.MAGENTA + " " + Fore.WHITE + f"  {username}@{uname.node}")
+        else:
+            print(f"   {username}@{uname.node}")
 
 def pos():
     if os.name == 'nt':
@@ -81,20 +109,31 @@ def pos():
         import distro
         distro = distro.linux_distribution()
         result = ' '.join(map(str, distro))
-        print(f"   {result} {uname.release}")
-
+    if 'Gentoo' in distro:
+        print(Fore.MAGENTA + " " + Fore.WHITE + f"  {result} {uname.release}")
+    else:
+        print("  {result} {uname.release}")
 
 def pterm():
     if "SHELL" in os.environ:
         shell = os.environ['SHELL']
         term = os.environ['TERM']  # hope this doesnt cause any issues
-        print(f"   {shell} {term}")
-
-
+        if os.name == 'posix':
+            import distro
+            current_distro = distro.linux_distribution()
+            if 'Gentoo' in current_distro:
+                print( Fore.MAGENTA + "  " + Fore.WHITE + f"  {shell} {term}")
+            else:
+                print(f"   {shell} {term}")
 def pwm():
     if os.name == 'posix':
         wm = os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
-        print(f"   {wm}")
+        import distro
+        distro = distro.linux_distribution()
+        if 'Gentoo' in distro:
+            print(Fore.MAGENTA + " " + Fore.WHITE +  f"  {wm}")
+        else:
+            print(f"   {wm}")
 
 
 # get system info n stuff
@@ -127,25 +166,11 @@ for arg in args:
         pwm()
 
 if len(args) == 0:
-    print(f"   {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
-    print(f"   {username}@{uname.node}")
-    print(f"   {uname.processor} ({cpu}%) ")
-    print(f"   {used}GiB / {total}GiB ({percent_used}%)")
-
-if "SHELL" in os.environ and len(args) == 0:
-    shell = os.environ['SHELL']
-    term = os.environ['TERM']  # hope this doesnt cause any issues
-    print(f"   {shell} {term}")
-
-if os.name == 'posix' and len(sys.argv) == 1:
-    import distro
-
-    distro = distro.linux_distribution()
-    result = ' '.join(map(str, distro))
-    wm = os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
-    print(f"   {wm}")
-    print(f"   {result} {uname.release}")
+    pdisk()
+    puserhost()
+    pcpu()
+    pmemory()
+    pterm()
+    pwm()
+    pos()
     package_count()
-
-elif os.name == 'nt' and len(args) == 0:
-    print(f"   {uname.system} {uname.release}")
