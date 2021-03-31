@@ -34,22 +34,17 @@ if os.name == 'posix':
     wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
     print(f"   {wm}")
     print(f"   {result} {uname.release}")
-elif os.name == 'nt':
-    print(f"   {uname.system} {uname.release}")
-
-
-# Experimental
+    # Experimental
 if 'Debian' in distro:
     packages = os.popen('apt list --installed | wc -l').read()
     print(f"   {packages}")
-
-
 if 'Gentoo' in distro:
     import portage
     packages = len(portage.db["/"]["vartree"].dbapi.cpv_all())
     print(f"   {packages}")
-
 # Experimental
 if 'Arch' in distro:
     packages = os.popen('pacman -Q | wc -l').read()
     print(f"   {packages}")
+elif os.name == 'nt':
+    print(f"   {uname.system} {uname.release}")
