@@ -10,6 +10,21 @@
 # Made by Kreato
 # Licensed Under GPL3-Or-Later
 import platform, psutil, os, getpass, shutil
+def FuckYouWindows():
+    # Experimental
+    if 'Debian' in distro:
+        packages = os.popen('apt list --installed | wc -l').read()
+        print(f"   {packages}")
+
+    if 'Gentoo' in distro:
+        import portage
+        packages = len(portage.db["/"]["vartree"].dbapi.cpv_all())
+        print(f"   {packages}")
+
+    # Experimental
+    if 'Arch' in distro:
+        packages = os.popen('pacman -Q | wc -l').read()
+        print(f" {packages}")
 uname = platform.uname()
 cpu = psutil.cpu_percent()
 username = getpass.getuser()
@@ -34,25 +49,6 @@ if os.name == 'posix':
     wm =  os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
     print(f"   {wm}")
     print(f"   {result} {uname.release}")
+    FuckYouWindows()
 elif os.name == 'nt':
-    print(f"   {uname.system} {uname.release}")
-
-
-if Exception:
-    pass
-
-
-# Experimental
-if 'Debian' in distro:
-    packages = os.popen('apt list --installed | wc -l').read()
-    print(f"   {packages}")
-
-if 'Gentoo' in distro:
-    import portage
-    packages = len(portage.db["/"]["vartree"].dbapi.cpv_all())
-    print(f"   {packages}")
-
-# Experimental
-if 'Arch' in distro:
-    packages = os.popen('pacman -Q | wc -l').read()
-    print(f" {packages}")
+    print(f"   {uname.system} {uname.release}") 
