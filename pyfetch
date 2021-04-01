@@ -91,13 +91,21 @@ def pmemory():
     if os.name == 'posix':
         import distro
         current_distro = distro.linux_distribution()
-        if 'Gentoo' in current_distro:
+        if 'Gentoo' in current_distro and used != 0:
             print(Fore.MAGENTA + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
-        elif 'Arch' in current_distro:
+        elif 'Arch' in current_distro and used != 0:
+            used2 = ram.used // (1024 ** 2)
+            print(Fore.BLUE + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)")
+        elif 'Gentoo' in current_distro and used == 0:
+            used2 = ram.used // (1024 ** 2)
+            print(Fore.MAGENTA + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)")
+        elif 'Arch' in current_distro and used == 0:
             print(Fore.BLUE + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
-        else:
+        elif used == 0:
+            used2 = ram.used // (1024 ** 2)
+            print(f"   {used2}MiB / {total}GiB ({percent_used}%)")
+        elif used != 0:
             print(f"   {used}GiB / {total}GiB ({percent_used}%)")
-
 
 def puserhost():
     if os.name == 'posix':
