@@ -17,6 +17,7 @@ Stylish and simple fetch for your terminal.
 * Type `pip install distro colorama psutil` to install the dependencies (for windows its only `pip install colorama distro`) (but for gentoo its `pip install distro colorama psutil --user`)
 * Type `make install` as root
 * Enjoy!
+Note: If you're using Arch Linux, there is a [AUR Package](https://aur.archlinux.org/packages/pyfetch-git/) for it.
 
 # Credits
 * Yellowsink for showing me that argparser is garbage & replacing argparser with doing it manually
