@@ -161,7 +161,7 @@ def pterm():
                 print(f"   {shell} {term}")
 def pwm():
     if os.name == 'posix':
-        wm = os.popen("wmctrl -m | grep dwm | awk -F'Name: ' '{printf $2}'").read()
+        wm = os.popen("wmctrl -m | awk -F'Name: ' '{printf $2}'").read()
         import distro
         distro = distro.linux_distribution()
         if 'Gentoo' in distro:
