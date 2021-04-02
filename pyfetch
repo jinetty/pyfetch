@@ -142,7 +142,7 @@ def pos():
     elif 'Debian' in distro:
         print(Fore.RED  + " " + Fore.WHITE + f"  {result} {uname.release}")
     else:
-        print("  {result} {uname.release}")
+        print(f"  {result} {uname.release}")
 
 def pterm():
     if "SHELL" in os.environ:
