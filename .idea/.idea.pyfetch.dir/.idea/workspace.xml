@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="af506ca8-f757-4986-a805-b869a81d3f79" name="Default Changelist" comment="" />
+    <list default="true" id="af506ca8-f757-4986-a805-b869a81d3f79" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.pyfetch.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.pyfetch.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ascii-art.py" beforeDir="false" afterPath="$PROJECT_DIR$/ascii_art.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyfetch" beforeDir="false" afterPath="$PROJECT_DIR$/pyfetch" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,8 +27,9 @@
   <component name="IdeDocumentHistory">
     <changedPaths>
       <option value="$PROJECT_DIR$/requirements.txt" />
-      <option value="$PROJECT_DIR$/pyfetch" />
       <option value="$PROJECT_DIR$/ascii-art.py" />
+      <option value="$PROJECT_DIR$/ascii_art.py" />
+      <option value="$PROJECT_DIR$/pyfetch" />
     </changedPaths>
   </component>
   <component name="MacroExpansionManager">
@@ -81,7 +86,7 @@
       <updated>1617214865035</updated>
       <workItem from="1617214916898" duration="191000" />
       <workItem from="1617215245166" duration="2849000" />
-      <workItem from="1617466966984" duration="1720000" />
+      <workItem from="1617466966984" duration="3579000" />
     </task>
     <servers />
   </component>
@@ -90,6 +95,17 @@
   </component>
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
