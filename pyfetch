@@ -43,135 +43,393 @@ if "-h" in args or "--help" in args:
 ╚═════╩═══════════════════╩═════════════════════════════════════╝''')
     exit()
 
+to_print = []
+# this global bullshit is because python's scoping is dumb and decides that it'd
+# rather shadow the var with a newly declared one than assign it a value
+global print_index
+print_index = 0
+
+# ascii art
+alpine = '''
+   /\\ /\\     
+  // \\  \\    
+ //   \\  \\   
+///    \\  \\  
+//      \\  \\ 
+         \\  \\
+          \\  '''
+
+arch = '''      /\\      
+     /^^\\     
+    /\\   \\    
+   /  __  \\
+  /  (  )  \\  
+ / __|  |__\\\\ 
+///        \\\\\\
+'''
+
+debian = '''  _____  
+ /  __ \\ 
+|  /    |
+|  \\___- 
+-_       
+  --_    '''
+
+fedora = '''     _____ 
+    /   __/
+   |  /    
+  _|  |_   
+ |_    _|  
+   |  |    
+ __/  |    
+/____/     '''
+
+freebsd = ''' _  _____     
+/ \\\\\\`     \\`/
+\\/       (__/ 
+|           | 
+|           | 
+ \\         /  
+  \\`-_____-\\` '''
+
+gentoo = '''  .-----.      
+.\\`    _  \\`.  
+\\`.   (_)   \\`.
+  \\`.        / 
+ .\\`       .\\` 
+/       .\\`    
+\\____.-\\`      '''
+
+linux = '''    ___
+   (.. \\
+   (<> |
+  //  \\\\ \\\\
+ ( |  | /|
+_/\\\\ __)/_
+\\/-____\\/'''
+
+macos = '''       (/    
+  .---__--.  
+ /         \\ 
+|         /  
+|         \\\\_
+ \\         / 
+  \\`._.-._.\\`'''
+
+manjaro = '''||||||||| ||||
+||||||||| ||||
+||||      ||||
+|||| |||| ||||
+|||| |||| ||||
+|||| |||| ||||
+|||| |||| ||||'''
+
+nixos = '''  \\\\   \\\\ //  
+ ==\\\\___\\\\/ //  
+   //    \\\\// 
+==//      //==
+ //\\\\____//   
+// /\\\\   \\\\== 
+  // \\\\   \\\\  '''
+
+openbsd = '''     _____    
+   \\-     -/  
+\\_/         \\ 
+|        O O |
+|_  <   )  3 )
+/ \\         / 
+   /-_____-\\  '''
+
+raspbian = '''  __  __  
+ (_\\)(/_)
+ (_(__)_) 
+(_(_)(_)_)
+ (_(__)_) 
+   (__)   '''
+
+void = '''    _______    
+    \\_____ \\`- 
+ /\\   ___ \\`- \\
+| |  /   \\  | |
+| |  \\___/  | |
+ \\ \\`-_____  \\/
+  \\`-______\\   '''
+
+windows = '''         /__---|
+ /----| |      |
+|-----| |------|
+                
+|-----| |------|
+ \\----| |      |
+         \\--___|
+'''
+
+
+# utlity functions for arrays
+def append(array, index, item):
+    if index + 1 < len(array):
+        array[index] += item
+    else:
+        array.append(item)
+
+def insert_at_start(array, index, item):
+    if index + 1 < len(array):
+        array[index] = item + array[index]
+    else:
+        array.append(item)
 
 # define important functions
 def package_count():
+    global print_index
+    if os.name == "nt":
+        return
     if os.name == 'posix':
         import distro
         current_distro = distro.linux_distribution()
+    else:
+        current_distro = ""
     if 'Debian' in current_distro:
         packages = os.popen('apt list --installed | wc -l').read()
-        print(Fore.RED + " " + Fore.WHITE + f"  {packages}")
+        append(to_print, print_index, Fore.RED + " " + Fore.WHITE + f"  {packages}")
+        print_index += 1
 
-    if 'Gentoo' in current_distro:
-        packages = os.popen("ls -d /var/db/pkg/*/* | wc -l | awk '{printf $1 }'").read() 
-        print(Fore.MAGENTA + " " + Fore.WHITE + f"  {packages}")
+    elif 'Gentoo' in current_distro:
+        packages = os.popen("ls -d /var/db/pkg/*/* | wc -l | awk '{printf $1 }'").read()
+        append(to_print, print_index, Fore.MAGENTA + " " + Fore.WHITE + f"  {packages}")
+        print_index += 1
 
     # Experimental
-    if 'Arch Linux' in current_distro:
+    elif 'Arch Linux' in current_distro:
         packages = os.popen('pacman -Q | wc -l').read()
-        print(Fore.BLUE + " " + Fore.WHITE + f"  {packages}")
+        append(to_print, print_index, Fore.BLUE + " " + Fore.WHITE + f"  {packages}")
+        print_index += 1
 
 
 def pcpu():
+    global print_index
     if os.name == 'posix':
         import distro
         current_distro = distro.linux_distribution()
-        if 'Gentoo' in current_distro:
-            print(Fore.MAGENTA + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)")
-        elif 'Arch Linux' in current_distro:
-            print(Fore.BLUE + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)")
-        elif 'Debian' in current_distro:
-            print(Fore.RED + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)")
-        else:
-            print(f"   {uname.processor} ({cpu}%)")
+    else:
+        current_distro = ""
+    if 'Gentoo' in current_distro:
+        append(to_print, print_index, Fore.MAGENTA + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)")
+        print_index += 1
+    elif 'Arch Linux' in current_distro:
+        append(to_print, print_index, Fore.BLUE + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)")
+        print_index += 1
+    elif 'Debian' in current_distro:
+        append(to_print, print_index, Fore.RED + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)")
+        print_index += 1
+    else:
+        append(to_print, print_index, f"   {uname.processor} ({cpu}%)")
+        print_index += 1
+
 
 def pdisk():
+    global print_index
     if os.name == 'posix':
         import distro
         current_distro = distro.linux_distribution()
-        if 'Gentoo' in current_distro:
-            print(Fore.MAGENTA + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
-        elif 'Arch Linux' in current_distro:
-            print(Fore.BLUE + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
-        elif 'Debian' in current_distro:
-            print(Fore.RED + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
-        else:
-            print(f"   {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+    else:
+        current_distro = ""
+    if 'Gentoo' in current_distro:
+        append(to_print, print_index, Fore.MAGENTA + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+        print_index += 1
+    elif 'Arch Linux' in current_distro:
+        append(to_print, print_index, Fore.BLUE + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+        print_index += 1
+    elif 'Debian' in current_distro:
+        append(to_print, print_index, Fore.RED + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+        print_index += 1
+    else:
+        append(to_print, print_index, f"   {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+        print_index += 1
 
 
 def pmemory():
+    global print_index
     if os.name == 'posix':
         import distro
         current_distro = distro.linux_distribution()
-        if 'Gentoo' in current_distro and used != 0: # if its not 0 GiB then show GiB instead of MiB
-            print(Fore.MAGENTA + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
-        elif 'Arch Linux' in current_distro and used != 0:
-            print(Fore.BLUE + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
-        elif 'Debian' in current_distro and used != 0:
-            print(Fore.BLUE + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
-        elif 'Gentoo' in current_distro and used == 0: # if its 0 GiB then show MiB instead of GiB
-            used2 = ram.used // (1024 ** 2)
-            print(Fore.MAGENTA + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)")
-        elif 'Arch Linux' in current_distro and used == 0:
-            used2 = ram.used // (1024 ** 2)
-            print(Fore.BLUE + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)")
-        elif 'Debian' in current_distro and used == 0:
-            used2 = ram.used // (1024 ** 2)
-            print(Fore.RED  + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)")
-        elif used == 0:
-            used2 = ram.used // (1024 ** 2)
-            print(f"   {used2}MiB / {total}GiB ({percent_used}%)")
-        elif used != 0:
-            print(f"   {used}GiB / {total}GiB ({percent_used}%)")
+    else:
+        current_distro = ""
+    if 'Gentoo' in current_distro and used != 0:  # if its not 0 GiB then show GiB instead of MiB
+        append(to_print, print_index, Fore.MAGENTA + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
+        print_index += 1
+    elif 'Arch Linux' in current_distro and used != 0:
+        append(to_print, print_index, Fore.BLUE + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
+        print_index += 1
+    elif 'Debian' in current_distro and used != 0:
+        append(to_print, print_index, Fore.BLUE + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
+        print_index += 1
+    elif 'Gentoo' in current_distro and used == 0:  # if its 0 GiB then show MiB instead of GiB
+        used2 = ram.used // (1024 ** 2)
+        append(to_print, print_index, Fore.MAGENTA + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)")
+        print_index += 1
+    elif 'Arch Linux' in current_distro and used == 0:
+        used2 = ram.used // (1024 ** 2)
+        append(to_print, print_index, Fore.BLUE + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)")
+        print_index += 1
+    elif 'Debian' in current_distro and used == 0:
+        used2 = ram.used // (1024 ** 2)
+        append(to_print, print_index, Fore.RED + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)")
+        print_index += 1
+    elif used == 0:
+        used2 = ram.used // (1024 ** 2)
+        append(to_print, print_index, f"   {used2}MiB / {total}GiB ({percent_used}%)")
+        print_index += 1
+    elif used != 0:
+        append(to_print, print_index, f"   {used}GiB / {total}GiB ({percent_used}%)")
+        print_index += 1
+
 
 def puserhost():
+    global print_index
     if os.name == 'posix':
         import distro
         current_distro = distro.linux_distribution()
-        if 'Gentoo' in current_distro:
-            print(Fore.MAGENTA + " " + Fore.WHITE + f"  {username}@{uname.node}")
-        elif 'Arch Linux' in current_distro:
-            print(Fore.BLUE + " " + Fore.WHITE + f"  {username}@{uname.node}")
-        elif 'Debian' in current_distro:
-            print(Fore.RED + " " + Fore.WHITE + f"  {username}@{uname.node}")
-        else:
-            print(f"   {username}@{uname.node}")
+    else:
+        current_distro = ""
+    if 'Gentoo' in current_distro:
+        append(to_print, print_index, Fore.MAGENTA + " " + Fore.WHITE + f"  {username}@{uname.node}")
+        print_index += 1
+    elif 'Arch Linux' in current_distro:
+        append(to_print, print_index, Fore.BLUE + " " + Fore.WHITE + f"  {username}@{uname.node}")
+        print_index += 1
+    elif 'Debian' in current_distro:
+        append(to_print, print_index, Fore.RED + " " + Fore.WHITE + f"  {username}@{uname.node}")
+        print_index += 1
+    else:
+        append(to_print, print_index, f"   {username}@{uname.node}")
+        print_index += 1
+
 
 def pos():
+    global print_index
     if os.name == 'nt':
-        print(f"   {uname.system} {uname.release}")
+        append(to_print, print_index, f"   {uname.system} {uname.release}")
+        print_index += 1
+        return
     elif os.name == 'posix':
         import distro
         distro = distro.linux_distribution()
         result = ' '.join(map(str, distro))
     if 'Gentoo' in distro:
-        print(Fore.MAGENTA + " " + Fore.WHITE + f"  {result} {uname.release}")
+        append(to_print, print_index, Fore.MAGENTA + " " + Fore.WHITE + f"  {result} {uname.release}")
+        print_index += 1
     elif 'Arch Linux' in distro:
-        print(Fore.BLUE + " " + Fore.WHITE + f"  {result} {uname.release}")
+        append(to_print, print_index, Fore.BLUE + " " + Fore.WHITE + f"  {result} {uname.release}")
+        print_index += 1
     elif 'Debian' in distro:
-        print(Fore.RED  + " " + Fore.WHITE + f"  {result} {uname.release}")
+        append(to_print, print_index, Fore.RED + " " + Fore.WHITE + f"  {result} {uname.release}")
+        print_index += 1
     else:
-        print(f"  {result} {uname.release}")
+        append(to_print, print_index, f"  {result} {uname.release}")
+        print_index += 1
+
 
 def pterm():
+    global print_index
     if "SHELL" in os.environ:
         shell = os.environ['SHELL']
         term = os.environ['TERM']  # hope this doesnt cause any issues
         if os.name == 'posix':
             import distro
             current_distro = distro.linux_distribution()
-            if 'Gentoo' in current_distro:
-                print( Fore.MAGENTA + "  " + Fore.WHITE + f"  {shell} {term}")
-            elif 'Arch Linux' in current_distro:
-                print( Fore.BLUE + "  " + Fore.WHITE + f"  {shell} {term}")
-            elif 'Debian' in current_distro:
-                print( Fore.RED + "  " + Fore.WHITE + f"  {shell} {term}")
-            else:
-                print(f"   {shell} {term}")
+        else:
+            current_distro = ""
+        if 'Gentoo' in current_distro:
+            append(to_print, print_index, Fore.MAGENTA + "  " + Fore.WHITE + f"  {shell} {term}")
+            print_index += 1
+        elif 'Arch Linux' in current_distro:
+            append(to_print, print_index, Fore.BLUE + "  " + Fore.WHITE + f"  {shell} {term}")
+            print_index += 1
+        elif 'Debian' in current_distro:
+            append(to_print, print_index, Fore.RED + "  " + Fore.WHITE + f"  {shell} {term}")
+            print_index += 1
+        else:
+            append(to_print, print_index, f"   {shell} {term}")
+            print_index += 1
+
+
 def pwm():
+    global print_index
     if os.name == 'posix':
         wm = os.popen("wmctrl -m | awk -F'Name: ' '{printf $2}'").read()
         import distro
         distro = distro.linux_distribution()
+    else:
+        distro = ""
+    try:
         if 'Gentoo' in distro:
-            print(Fore.MAGENTA + " " + Fore.WHITE +  f"  {wm}")
+            append(to_print, print_index, Fore.MAGENTA + " " + Fore.WHITE + f"  {wm}")
+            print_index += 1
         elif 'Arch Linux' in distro:
-            print(Fore.BLUE + " " + Fore.WHITE +  f"  {wm}")
+            append(to_print, print_index, Fore.BLUE + " " + Fore.WHITE + f"  {wm}")
+            print_index += 1
         elif 'Debian' in distro:
-            print(Fore.RED + " " + Fore.WHITE +  f"  {wm}")
+            append(to_print, print_index, Fore.RED + " " + Fore.WHITE + f"  {wm}")
+            print_index += 1
         else:
-            print(f"   {wm}")
+            append(to_print, print_index, f"   {wm}")
+            print_index += 1
+    except:
+        pass
+
+
+def pasciiart():
+    if os.name == 'posix':
+        import distro
+        current_distro = distro.linux_distribution()
+    elif os.name == "nt":
+        current_distro = "windows"
+    if "alpine" in current_distro[0].lower():
+        ascii = alpine
+    elif "arch" in current_distro[0].lower():
+        ascii = arch
+    elif "debian" in current_distro[0].lower():
+        ascii = debian
+    elif "fedora" in current_distro[0].lower():
+        ascii = fedora
+    elif "freebsd" in current_distro[0].lower():
+        ascii = freebsd
+    elif "gentoo" in current_distro[0].lower():
+        ascii = gentoo
+    elif "linux" in current_distro[0].lower():
+        ascii = linux
+    elif "mac" in current_distro[0].lower():
+        ascii = macos
+    elif "manjaro" in current_distro[0].lower():
+        ascii = manjaro
+    elif "nix" in current_distro[0].lower():
+        ascii = nixos
+    elif "openbsd" in current_distro[0].lower():
+        ascii = openbsd
+    elif "raspbian" in current_distro[0].lower():
+        ascii = raspbian
+    elif "void" in current_distro[0].lower():
+        ascii = void
+    elif "windows" == current_distro:
+        ascii = windows
+    else:
+        ascii = ""
+
+    ascii_lines = ascii.splitlines()
+    for i in range(max(len(to_print), len(ascii_lines))):
+        if i < len(ascii_lines):
+            if i >= len(to_print):
+                insert_at_start(to_print, i, ascii_lines[i] + " ")
+            else:
+                insert_at_start(to_print, i, ascii_lines[i] + " " + to_print[i])
+        else:
+            padding = ""
+            for _ in ascii_lines[0]:
+                padding += " "
+            if i >= len(to_print):
+                insert_at_start(to_print, i, padding + " ")
+            else:
+                insert_at_start(to_print, i, padding + " " + to_print[i])
 
 
 # get system info n stuff
@@ -204,6 +462,7 @@ for arg in args:
         pwm()
 
 if len(args) == 0:
+    pasciiart()
     pdisk()
     puserhost()
     pcpu()
@@ -212,3 +471,7 @@ if len(args) == 0:
     pwm()
     pos()
     package_count()
+
+
+for line in to_print:
+    print(line)
