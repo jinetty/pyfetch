@@ -396,53 +396,68 @@ def pasciiart():
         current_distro = "windows"
     if "alpine" in current_distro[0].lower():
         ascii = alpine
+        asciicolor = Fore.BLUE
     elif "arch" in current_distro[0].lower():
         ascii = arch
+        asciicolor = Fore.BLUE
     elif "debian" in current_distro[0].lower():
         ascii = debian
+        asciicolor = Fore.RED
     elif "fedora" in current_distro[0].lower():
         ascii = fedora
+        asciicolor = Fore.BLUE
     elif "freebsd" in current_distro[0].lower():
         ascii = freebsd
+        asciicolor = Fore.RED
     elif "gentoo" in current_distro[0].lower():
         ascii = gentoo
+        asciicolor = Fore.MAGENTA
     elif "linux" in current_distro[0].lower():
         ascii = linux
+        asciicolor = Fore.RESET
     elif "mac" in current_distro[0].lower():
         ascii = macos
+        asciicolor = Fore.RESET
     elif "manjaro" in current_distro[0].lower():
         ascii = manjaro
+        asciicolor = Fore.GREEN
     elif "nix" in current_distro[0].lower():
         ascii = nixos
+        asciicolor = Fore.BLUE
     elif "openbsd" in current_distro[0].lower():
         ascii = openbsd
+        asciicolor = Fore.YELLOW
     elif "raspbian" in current_distro[0].lower():
         ascii = raspbian
     elif "void" in current_distro[0].lower():
         ascii = void
+        asciicolor = Fore.GREEN
     elif "windows" == current_distro:
         ascii = windows
+        asciicolor = Fore.BLUE
     else:
         ascii = ""
+        asciicolor = Fore.RESET
 
     ascii_lines = ascii.splitlines()
     for i in range(max(len(to_print), len(ascii_lines))):
         if i < len(ascii_lines):
-            insert_at_start(to_print, i, ascii_lines[i] + " ")
+            insert_at_start(to_print, i, asciicolor + ascii_lines[i] + " ")
+            Fore.RESET
         else:
             padding = ""
             for _ in ascii_lines[0]:
                 padding += " "
             insert_at_start(to_print, i, padding + " ")
 
-def noascii():                                                                                                
-        pdisk()                                                                                              
-        puserhost()                                                                                        
-        pcpu()                                                                                           
-        pmemory()                                                                                           
-        pterm()                                                                                               
-        pwm()                                                                                               
-        pos()                                                                                                
+def noascii():                                                                                          
+        pdisk()                                                                                          
+        puserhost()                                                                                    
+        pcpu()                                                                                       
+        pmemory()                                                                                       
+        pterm()                                                                                           
+        pwm()                                                                              
+        pos()                                                                               
         package_count()
 
 # get system info n stuff
