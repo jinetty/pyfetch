@@ -42,7 +42,9 @@ if "-h" in args or "--help" in args:
 ║ -wm ║ --windowmanager   ║ Your current window manager         ║
 ╠═════╬═══════════════════╬═════════════════════════════════════╣
 ║ -a  ║ --asciiart        ║ ASCII art for your Distro / OS      ║
-╚═════╩═══════════════════╩═════════════════════════════════════╝''')
+║═════╬═══════════════════╬═════════════════════════════════════╣
+║ -na ║ --noascii         ║ Disables ascii art                  ║
+╚═════╩═══════════════════╩═════════════════════════════════════╝ ''')
     exit()
 
 to_print = []
@@ -433,6 +435,15 @@ def pasciiart():
                 padding += " "
             insert_at_start(to_print, i, padding + " ")
 
+def noascii():                                                                                                
+        pdisk()                                                                                              
+        puserhost()                                                                                        
+        pcpu()                                                                                           
+        pmemory()                                                                                           
+        pterm()                                                                                               
+        pwm()                                                                                               
+        pos()                                                                                                
+        package_count()
 
 # get system info n stuff
 uname = platform.uname()
@@ -467,9 +478,11 @@ for arg in args:
         pwm()
     elif arg == "-a" or arg == "--asciiart":
         print_ascii = True
+    elif arg == "-na" or arg == "--noascii":
+        noascii()
 
 if print_ascii:
-    pasciiart()
+    pasciiart() 
 
 if len(args) == 0:
     pdisk()
