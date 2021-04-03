@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="af506ca8-f757-4986-a805-b869a81d3f79" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.pyfetch.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.pyfetch.dir/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ascii-art.py" beforeDir="false" afterPath="$PROJECT_DIR$/ascii_art.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pyfetch" beforeDir="false" afterPath="$PROJECT_DIR$/pyfetch" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -86,7 +85,7 @@
       <updated>1617214865035</updated>
       <workItem from="1617214916898" duration="191000" />
       <workItem from="1617215245166" duration="2849000" />
-      <workItem from="1617466966984" duration="3579000" />
+      <workItem from="1617466966984" duration="4207000" />
     </task>
     <servers />
   </component>

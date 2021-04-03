@@ -80,13 +80,17 @@ def pcpu():
     else:
         current_distro = ""
     if 'Gentoo' in current_distro:
-        print(Fore.MAGENTA + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)")
+        to_print[print_index] = Fore.MAGENTA + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)"
+        print_index += 1
     elif 'Arch Linux' in current_distro:
-        print(Fore.BLUE + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)")
+        to_print[print_index] = Fore.BLUE + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)"
+        print_index += 1
     elif 'Debian' in current_distro:
-        print(Fore.RED + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)")
+        to_print[print_index] = Fore.RED + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)"
+        print_index += 1
     else:
-        print(f"   {uname.processor} ({cpu}%)")
+        to_print[print_index] = f"   {uname.processor} ({cpu}%)"
+        print_index += 1
 
 
 def pdisk():
@@ -96,16 +100,17 @@ def pdisk():
     else:
         current_distro = ""
     if 'Gentoo' in current_distro:
-        print(
-            Fore.MAGENTA + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+        to_print[print_index] = Fore.MAGENTA + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)"
+        print_index += 1
     elif 'Arch Linux' in current_distro:
-        print(
-            Fore.BLUE + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+        to_print[print_index] = Fore.BLUE + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)"
+        print_index += 1
     elif 'Debian' in current_distro:
-        print(
-            Fore.RED + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+        to_print[print_index] = Fore.RED + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)"
+        print_index += 1
     else:
-        print(f"   {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+        to_print[print_index] = f"   {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)"
+        print_index += 1
 
 
 def pmemory():
@@ -115,25 +120,33 @@ def pmemory():
     else:
         current_distro = ""
     if 'Gentoo' in current_distro and used != 0:  # if its not 0 GiB then show GiB instead of MiB
-        print(Fore.MAGENTA + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
+        to_print[print_index] = Fore.MAGENTA + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)"
+        print_index += 1
     elif 'Arch Linux' in current_distro and used != 0:
-        print(Fore.BLUE + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
+        to_print[print_index] = Fore.BLUE + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)"
+        print_index += 1
     elif 'Debian' in current_distro and used != 0:
-        print(Fore.BLUE + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
+        to_print[print_index] = Fore.BLUE + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)"
+        print_index += 1
     elif 'Gentoo' in current_distro and used == 0:  # if its 0 GiB then show MiB instead of GiB
         used2 = ram.used // (1024 ** 2)
-        print(Fore.MAGENTA + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)")
+        to_print[print_index] = Fore.MAGENTA + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)"
+        print_index += 1
     elif 'Arch Linux' in current_distro and used == 0:
         used2 = ram.used // (1024 ** 2)
-        print(Fore.BLUE + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)")
+        to_print[print_index] = Fore.BLUE + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)"
+        print_index += 1
     elif 'Debian' in current_distro and used == 0:
         used2 = ram.used // (1024 ** 2)
-        print(Fore.RED + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)")
+        to_print[print_index] = Fore.RED + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)"
+        print_index += 1
     elif used == 0:
         used2 = ram.used // (1024 ** 2)
-        print(f"   {used2}MiB / {total}GiB ({percent_used}%)")
+        to_print[print_index] = f"   {used2}MiB / {total}GiB ({percent_used}%)"
+        print_index += 1
     elif used != 0:
-        print(f"   {used}GiB / {total}GiB ({percent_used}%)")
+        to_print[print_index] = f"   {used}GiB / {total}GiB ({percent_used}%)"
+        print_index += 1
 
 
 def puserhost():
@@ -143,31 +156,40 @@ def puserhost():
     else:
         current_distro = ""
     if 'Gentoo' in current_distro:
-        print(Fore.MAGENTA + " " + Fore.WHITE + f"  {username}@{uname.node}")
+        to_print[print_index] = Fore.MAGENTA + " " + Fore.WHITE + f"  {username}@{uname.node}"
+        print_index += 1
     elif 'Arch Linux' in current_distro:
-        print(Fore.BLUE + " " + Fore.WHITE + f"  {username}@{uname.node}")
+        to_print[print_index] = Fore.BLUE + " " + Fore.WHITE + f"  {username}@{uname.node}"
+        print_index += 1
     elif 'Debian' in current_distro:
-        print(Fore.RED + " " + Fore.WHITE + f"  {username}@{uname.node}")
+        to_print[print_index] = Fore.RED + " " + Fore.WHITE + f"  {username}@{uname.node}"
+        print_index += 1
     else:
-        print(f"   {username}@{uname.node}")
+        to_print[print_index] = f"   {username}@{uname.node}"
+        print_index += 1
 
 
 def pos():
     if os.name == 'nt':
-        print(f"   {uname.system} {uname.release}")
+        to_print[print_index] = f"   {uname.system} {uname.release}"
+        print_index += 1
         return
     elif os.name == 'posix':
         import distro
         distro = distro.linux_distribution()
         result = ' '.join(map(str, distro))
     if 'Gentoo' in distro:
-        print(Fore.MAGENTA + " " + Fore.WHITE + f"  {result} {uname.release}")
+        to_print[print_index] = Fore.MAGENTA + " " + Fore.WHITE + f"  {result} {uname.release}"
+        print_index += 1
     elif 'Arch Linux' in distro:
-        print(Fore.BLUE + " " + Fore.WHITE + f"  {result} {uname.release}")
+        to_print[print_index] = Fore.BLUE + " " + Fore.WHITE + f"  {result} {uname.release}"
+        print_index += 1
     elif 'Debian' in distro:
-        print(Fore.RED + " " + Fore.WHITE + f"  {result} {uname.release}")
+        to_print[print_index] = Fore.RED + " " + Fore.WHITE + f"  {result} {uname.release}"
+        print_index += 1
     else:
-        print(f"  {result} {uname.release}")
+        to_print[print_index] = f"  {result} {uname.release}"
+        print_index += 1
 
 
 def pterm():
@@ -180,13 +202,17 @@ def pterm():
         else:
             current_distro = ""
         if 'Gentoo' in current_distro:
-            print(Fore.MAGENTA + "  " + Fore.WHITE + f"  {shell} {term}")
+            to_print[print_index] = Fore.MAGENTA + "  " + Fore.WHITE + f"  {shell} {term}"
+            print_index += 1
         elif 'Arch Linux' in current_distro:
-            print(Fore.BLUE + "  " + Fore.WHITE + f"  {shell} {term}")
+            to_print[print_index] = Fore.BLUE + "  " + Fore.WHITE + f"  {shell} {term}"
+            print_index += 1
         elif 'Debian' in current_distro:
-            print(Fore.RED + "  " + Fore.WHITE + f"  {shell} {term}")
+            to_print[print_index] = Fore.RED + "  " + Fore.WHITE + f"  {shell} {term}"
+            print_index += 1
         else:
-            print(f"   {shell} {term}")
+            to_print[print_index] = f"   {shell} {term}"
+            print_index += 1
 
 
 def pwm():
@@ -198,13 +224,17 @@ def pwm():
         distro = ""
     try:
         if 'Gentoo' in distro:
-            print(Fore.MAGENTA + " " + Fore.WHITE + f"  {wm}")
+            to_print[print_index] = Fore.MAGENTA + " " + Fore.WHITE + f"  {wm}"
+            print_index += 1
         elif 'Arch Linux' in distro:
-            print(Fore.BLUE + " " + Fore.WHITE + f"  {wm}")
+            to_print[print_index] = Fore.BLUE + " " + Fore.WHITE + f"  {wm}"
+            print_index += 1
         elif 'Debian' in distro:
-            print(Fore.RED + " " + Fore.WHITE + f"  {wm}")
+            to_print[print_index] = Fore.RED + " " + Fore.WHITE + f"  {wm}"
+            print_index += 1
         else:
-            print(f"   {wm}")
+            to_print[print_index] = f"   {wm}"
+            print_index += 1
     except:
         pass
 
@@ -246,8 +276,14 @@ def pasciiart():
     else:
         ascii = ""
 
-    for i in range(len(ascii)):
-        to_print[i] = ascii.splitlines()[i]
+    for i in range(max(len(to_print), len(ascii))):
+        if i < len(ascii):
+            to_print[i] = ascii[i] + to_print[i]
+        else:
+            padding = ""
+            for x in ascii[0]:
+                padding += " "
+            to_print[i] = padding + to_print[i]
 
 
 # get system info n stuff
@@ -288,3 +324,7 @@ if len(args) == 0:
     pwm()
     pos()
     package_count()
+
+
+for line in to_print:
+    print(line)
