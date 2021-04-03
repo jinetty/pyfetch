@@ -40,6 +40,8 @@ if "-h" in args or "--help" in args:
 ║ -t  ║ --terminal        ║ What type of terminal you are using ║
 ╠═════╬═══════════════════╬═════════════════════════════════════╣
 ║ -wm ║ --windowmanager   ║ Your current window manager         ║
+╠═════╬═══════════════════╬═════════════════════════════════════╣
+║ -a  ║ --asciiart        ║ ASCII art for your Distro / OS      ║
 ╚═════╩═══════════════════╩═════════════════════════════════════╝''')
     exit()
 
@@ -173,7 +175,7 @@ def append(array, index, item):
         array.append(item)
 
 def insert_at_start(array, index, item):
-    if index + 1 < len(array):
+    if index < len(array):
         array[index] = item + array[index]
     else:
         array.append(item)
@@ -443,6 +445,9 @@ totaldisk, useddisk, freedisk = shutil.disk_usage("/")
 diskpercent_used = round(useddisk / totaldisk * 100, 2)
 percent_used = round(ram.used / ram.total * 100, 2)
 # Yellowsink's super simple argument parsing. Who needs argparse when you have this???
+
+print_ascii = False
+
 for arg in args:
     if arg == "-c" or arg == "--cpu":
         pcpu()
@@ -460,9 +465,13 @@ for arg in args:
         pterm()
     elif arg == "-wm" or arg == "--windowmanager":
         pwm()
+    elif arg == "-a" or arg == "--asciiart":
+        print_ascii = True
+        
+if print_ascii:
+    pasciiart()
 
 if len(args) == 0:
-    pasciiart()
     pdisk()
     puserhost()
     pcpu()
@@ -471,6 +480,7 @@ if len(args) == 0:
     pwm()
     pos()
     package_count()
+    pasciiart()
 
 
 for line in to_print:
