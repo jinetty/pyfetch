@@ -24,27 +24,27 @@ args = sys.argv[1:]
 if "-h" in args or "--help" in args:
     # enjoy this lovely table made out of entirely unicode chars
     print('''pyfetch - a lighter and faster neofetch.
-╔═════╦═══════════════════╦═════════════════════════════════════╗
-║ -c  ║ --cpu             ║ CPU info & usage                    ║
-╠═════╬═══════════════════╬═════════════════════════════════════╣
-║ -d  ║ --disk            ║ Disk usage                          ║
-╠═════╬═══════════════════╬═════════════════════════════════════╣
-║ -m  ║ --memory          ║ RAM usage                           ║
-╠═════╬═══════════════════╬═════════════════════════════════════╣
-║ -uh ║ --userhostname    ║ user@hostname                       ║
-╠═════╬═══════════════════╬═════════════════════════════════════╣
-║ -p  ║ --packages        ║ Installed package count             ║
-╠═════╬═══════════════════╬═════════════════════════════════════╣
-║ -os ║ --operatingsystem ║ Which OS you have                   ║
-╠═════╬═══════════════════╬═════════════════════════════════════╣
-║ -t  ║ --terminal        ║ What type of terminal you are using ║
-╠═════╬═══════════════════╬═════════════════════════════════════╣
-║ -wm ║ --windowmanager   ║ Your current window manager         ║
-╠═════╬═══════════════════╬═════════════════════════════════════╣
-║ -a  ║ --asciiart        ║ ASCII art for your Distro / OS      ║
-║═════╬═══════════════════╬═════════════════════════════════════╣
-║ -na ║ --noascii         ║ Disables ascii art                  ║
-╚═════╩═══════════════════╩═════════════════════════════════════╝ ''')
+╔═════╦═══════════════════╦════════════════════════════════════════════════════╗
+║ -c  ║ --cpu             ║ CPU info & usage                                   ║
+╠═════╬═══════════════════╬════════════════════════════════════════════════════╣
+║ -d  ║ --disk            ║ Disk usage                                         ║
+╠═════╬═══════════════════╬════════════════════════════════════════════════════╣
+║ -m  ║ --memory          ║ RAM usage                                          ║
+╠═════╬═══════════════════╬════════════════════════════════════════════════════╣
+║ -uh ║ --userhostname    ║ user@hostname                                      ║
+╠═════╬═══════════════════╬════════════════════════════════════════════════════╣
+║ -p  ║ --packages        ║ Installed package count                            ║
+╠═════╬═══════════════════╬════════════════════════════════════════════════════╣
+║ -os ║ --operatingsystem ║ Which OS you have                                  ║
+╠═════╬═══════════════════╬════════════════════════════════════════════════════╣
+║ -t  ║ --terminal        ║ What type of terminal you are using                ║
+╠═════╬═══════════════════╬════════════════════════════════════════════════════╣
+║ -wm ║ --windowmanager   ║ Your current window manager                        ║
+╠═════╬═══════════════════╬════════════════════════════════════════════════════╣
+║ -a  ║ --asciiart        ║ ASCII art for your Distro / OS, or a specified OS. ║
+║═════╬═══════════════════╬════════════════════════════════════════════════════╣
+║ -na ║ --noascii         ║ Disables ascii art                                 ║
+╚═════╩═══════════════════╩════════════════════════════════════════════════════╝ ''')
     exit()
 
 to_print = []
@@ -388,77 +388,81 @@ def pwm():
         pass
 
 
-def pasciiart():
-    if os.name == 'posix':
-        import distro
-        current_distro = distro.linux_distribution()
-    elif os.name == "nt":
-        current_distro = "windows"
-    if "alpine" in current_distro[0].lower():
+def pasciiart(current_distro=None):
+    if current_distro is None:
+        if os.name == 'posix':
+            import distro
+            current_distro = distro.linux_distribution()[0]
+        elif os.name == "nt":
+            current_distro = "windows"
+        else:
+            current_distro = ""
+    if "alpine" in current_distro.lower():
         ascii = alpine
-        asciicolor = Fore.BLUE
-    elif "arch" in current_distro[0].lower():
+        ascii_color = Fore.BLUE
+    elif "arch" in current_distro.lower():
         ascii = arch
-        asciicolor = Fore.BLUE
-    elif "debian" in current_distro[0].lower():
+        ascii_color = Fore.BLUE
+    elif "debian" in current_distro.lower():
         ascii = debian
-        asciicolor = Fore.RED
-    elif "fedora" in current_distro[0].lower():
+        ascii_color = Fore.RED
+    elif "fedora" in current_distro.lower():
         ascii = fedora
-        asciicolor = Fore.BLUE
-    elif "freebsd" in current_distro[0].lower():
+        ascii_color = Fore.MAGENTA
+    elif "freebsd" in current_distro.lower():
         ascii = freebsd
-        asciicolor = Fore.RED
-    elif "gentoo" in current_distro[0].lower():
+        ascii_color = Fore.RED
+    elif "gentoo" in current_distro.lower():
         ascii = gentoo
-        asciicolor = Fore.MAGENTA
-    elif "linux" in current_distro[0].lower():
+        ascii_color = Fore.MAGENTA
+    elif "linux" in current_distro.lower():
         ascii = linux
-        asciicolor = Fore.RESET
-    elif "mac" in current_distro[0].lower():
+        ascii_color = Fore.RESET
+    elif "mac" in current_distro.lower():
         ascii = macos
-        asciicolor = Fore.RESET
-    elif "manjaro" in current_distro[0].lower():
+        ascii_color = Fore.RESET
+    elif "manjaro" in current_distro.lower():
         ascii = manjaro
-        asciicolor = Fore.GREEN
-    elif "nix" in current_distro[0].lower():
+        ascii_color = Fore.GREEN
+    elif "nix" in current_distro.lower():
         ascii = nixos
-        asciicolor = Fore.BLUE
-    elif "openbsd" in current_distro[0].lower():
+        ascii_color = Fore.BLUE
+    elif "openbsd" in current_distro.lower():
         ascii = openbsd
-        asciicolor = Fore.YELLOW
-    elif "raspbian" in current_distro[0].lower():
+        ascii_color = Fore.YELLOW
+    elif "raspbian" in current_distro.lower():
         ascii = raspbian
-    elif "void" in current_distro[0].lower():
+    elif "void" in current_distro.lower():
         ascii = void
-        asciicolor = Fore.GREEN
+        ascii_color = Fore.GREEN
     elif "windows" == current_distro:
         ascii = windows
-        asciicolor = Fore.BLUE
+        ascii_color = Fore.BLUE
     else:
-        ascii = ""
-        asciicolor = Fore.RESET
+        ascii = "\n"
+        ascii_color = Fore.RESET
 
     ascii_lines = ascii.splitlines()
     for i in range(max(len(to_print), len(ascii_lines))):
         if i < len(ascii_lines):
-            insert_at_start(to_print, i, asciicolor + ascii_lines[i] + " ")
-            Fore.RESET
+            insert_at_start(to_print, i, ascii_color + ascii_lines[i] + " " + Fore.RESET)
         else:
             padding = ""
             for _ in ascii_lines[0]:
                 padding += " "
             insert_at_start(to_print, i, padding + " ")
 
-def noascii():                                                                                          
-        pdisk()                                                                                          
-        puserhost()                                                                                    
-        pcpu()                                                                                       
-        pmemory()                                                                                       
-        pterm()                                                                                           
-        pwm()                                                                              
-        pos()                                                                               
-        package_count()
+
+def noascii():
+    pdisk()
+    puserhost()
+    pcpu()
+    pmemory()
+    pterm()
+    pwm()
+    pos()
+    package_count()
+
 
 # get system info n stuff
 uname = platform.uname()
@@ -473,8 +477,12 @@ percent_used = round(ram.used / ram.total * 100, 2)
 # Yellowsink's super simple argument parsing. Who needs argparse when you have this???
 
 print_ascii = False
+selected_ascii = None
 
-for arg in args:
+# my shitty recreation of a for from a sensible lang like C where for loops arent just foreach
+i = 0
+while i < len(args):
+    arg = args[i]
     if arg == "-c" or arg == "--cpu":
         pcpu()
     elif arg == "-d" or arg == "--disk":
@@ -492,12 +500,17 @@ for arg in args:
     elif arg == "-wm" or arg == "--windowmanager":
         pwm()
     elif arg == "-a" or arg == "--asciiart":
+        if not args[i + 1].startswith("-"):
+            selected_ascii = args[i + 1]
+            i += 1
         print_ascii = True
     elif arg == "-na" or arg == "--noascii":
         noascii()
+        
+    i += 1
 
 if print_ascii:
-    pasciiart() 
+    pasciiart(selected_ascii)
 
 if len(args) == 0:
     pdisk()
