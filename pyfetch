@@ -451,7 +451,7 @@ def pasciiart(current_distro=None):
         ascii_color = Fore.BLUE
     elif "guix" == current_distro:
         ascii = guix
-        ascii_color = Fore.YELLOWW
+        ascii_color = Fore.YELLOW
     else:
         ascii = "\n"
         ascii_color = Fore.RESET
