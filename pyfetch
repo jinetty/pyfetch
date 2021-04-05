@@ -63,6 +63,17 @@ alpine = '''
          \\  \\
           \\  '''
 
+
+guix = '''
+|.__          __.|
+|__ \\        / __|
+   \\ \\      / /
+    \\ \\    / /
+     \\ \\  / /
+      \\ \\/ /
+       \\__/'''
+
+
 arch = '''      /\\      
      /^^\\     
     /\\   \\    
@@ -438,6 +449,9 @@ def pasciiart(current_distro=None):
     elif "windows" == current_distro:
         ascii = windows
         ascii_color = Fore.BLUE
+    elif "guix" == current_distro:
+        ascii = guix
+        ascii_color = Fore.YELLOWW
     else:
         ascii = "\n"
         ascii_color = Fore.RESET
