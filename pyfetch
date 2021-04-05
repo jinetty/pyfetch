@@ -211,20 +211,29 @@ def package_count():
         current_distro = distro.linux_distribution()
     else:
         current_distro = ""
-    if 'Debian' in current_distro:
-        packages = os.popen('apt list --installed | wc -l').read()
-        append(to_print, print_index, Fore.RED + " " + Fore.WHITE + f"  {packages}")
+
+
+    # [:-1] trims off the last character, this eliminates an excess newline
+        
+    # apt, if Debian make it red
+    if len(os.popen("whereis apt").read()) > 5:
+        packages = os.popen('apt list --installed | wc -l').read()[:-1]
+        colour = Fore.RED if 'Debian' in current_distro else Fore.WHITE
+        append(to_print, print_index, colour + " " + Fore.WHITE + f"APT:  {packages}")
         print_index += 1
 
-    elif 'Gentoo' in current_distro:
+    # emerge, if Gentoo make it purple
+    if len(os.popen("whereis emerge").read()) > 8:
         packages = os.popen("ls -d /var/db/pkg/*/* | wc -l | awk '{printf $1 }'").read()
-        append(to_print, print_index, Fore.MAGENTA + " " + Fore.WHITE + f"  {packages}")
+        colour = Fore.MAGENTA if 'GENTOO' in current_distro else Fore.WHITE
+        append(to_print, print_index, colour + " " + Fore.WHITE + f"Emerge:  {packages}")
         print_index += 1
-
-    # Experimental
-    elif 'Arch Linux' in current_distro:
-        packages = os.popen('pacman -Q | wc -l').read()
-        append(to_print, print_index, Fore.BLUE + " " + Fore.WHITE + f"  {packages}")
+        
+    # pacman, if Arch make it blue
+    if len(os.popen("whereis pacman").read()) > 8:
+        packages = os.popen('pacman -Q | wc -l').read()[:-1]
+        colour = Fore.BLUE if 'Arch Linux' in current_distro else Fore.WHITE
+        append(to_print, print_index, colour + " " + Fore.WHITE + f"Pacman:  {packages}")
         print_index += 1
 
 
