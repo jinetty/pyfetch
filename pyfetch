@@ -462,7 +462,7 @@ def pasciiart(current_distro=None):
         ascii_color = Fore.YELLOW
     elif "endeavour" in current_distro.lower():
         ascii = endeavour
-        ascii_color = Fore.PURPLE
+        ascii_color = Fore.MAGENTA
     else:
         ascii = "\n"
         ascii_color = Fore.RESET
