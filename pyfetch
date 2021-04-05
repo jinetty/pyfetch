@@ -63,9 +63,15 @@ alpine = '''
          \\  \\
           \\  '''
 
+endeavour = '''  /\\\\     
+    //  \\\\\\\\  
+   //    \\\\ \\\\
+ / /     _) ) 
+/_/___-- __-  
+ /____-- '''
 
-guix = '''
-|.__          __.|
+
+guix = ''' |.__          __.|
 |__ \\        / __|
    \\ \\      / /
     \\ \\    / /
@@ -452,6 +458,9 @@ def pasciiart(current_distro=None):
     elif "guix" == current_distro:
         ascii = guix
         ascii_color = Fore.YELLOW
+    elif "EndeavourOS" == current_distro:
+        ascii = endeavour
+        ascii_color = Fore.PURPLE
     else:
         ascii = "\n"
         ascii_color = Fore.RESET
