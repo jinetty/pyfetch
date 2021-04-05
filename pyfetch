@@ -414,6 +414,8 @@ def pasciiart(current_distro=None):
             current_distro = "windows"
         else:
             current_distro = ""
+
+    # ".lower()"" and "in" because im not confident i got these 100% correct
     if "alpine" in current_distro.lower():
         ascii = alpine
         ascii_color = Fore.BLUE
@@ -455,10 +457,10 @@ def pasciiart(current_distro=None):
     elif "windows" == current_distro:
         ascii = windows
         ascii_color = Fore.BLUE
-    elif "guix" == current_distro.lower():
+    elif "guix" in current_distro.lower():
         ascii = guix
         ascii_color = Fore.YELLOW
-    elif "EndeavourOS" == current_distro.lower():
+    elif "endeavour" in current_distro.lower():
         ascii = endeavour
         ascii_color = Fore.PURPLE
     else:
