@@ -70,7 +70,6 @@ endeavour = '''     /\\\\
 /_/___-- __-  
  /____--      '''
 
-
 guix = '''|.__          __.|
 |__ \\        / __|
    \\ \\      / /   
@@ -78,7 +77,6 @@ guix = '''|.__          __.|
      \\ \\  / /     
       \\ \\/ /      
        \\__/       '''
-
 
 arch = '''      /\\      
      /^^\\     
@@ -121,13 +119,13 @@ gentoo = '''  .-----.
 /       .\\`    
 \\____.-\\`      '''
 
-linux = '''    ___
-   (.. \\
-   (<> |
-  //  \\\\ \\\\
+linux = '''    ___   
+   (.. \\  
+   (<> |  
+  //  \\ \\ 
  ( |  | /|
-_/\\\\ __)/_
-\\/-____\\/'''
+_/\\ __)/_ 
+ \\/-__\\/  '''
 
 macos = '''       (/    
   .---__--.  
@@ -186,6 +184,72 @@ windows = '''         /__---|
 '''
 
 
+def get_ascii(current_distro=None):
+    if current_distro is None:
+        if os.name == 'posix':
+            import distro
+            current_distro = distro.linux_distribution()[0]
+        elif os.name == "nt":
+            current_distro = "windows"
+        else:
+            current_distro = ""
+    # ".lower()"" and "in" because im not confident i got these 100% correct
+    if "alpine" in current_distro.lower():
+        ascii = alpine
+        ascii_color = Fore.BLUE
+    elif "arch" in current_distro.lower():
+        ascii = arch
+        ascii_color = Fore.BLUE
+    elif "debian" in current_distro.lower():
+        ascii = debian
+        ascii_color = Fore.RED
+    elif "fedora" in current_distro.lower():
+        ascii = fedora
+        ascii_color = Fore.MAGENTA
+    elif "freebsd" in current_distro.lower():
+        ascii = freebsd
+        ascii_color = Fore.RED
+    elif "gentoo" in current_distro.lower():
+        ascii = gentoo
+        ascii_color = Fore.MAGENTA
+    elif "linux" in current_distro.lower():
+        ascii = linux
+        ascii_color = Fore.RESET
+    elif "mac" in current_distro.lower():
+        ascii = macos
+        ascii_color = Fore.RESET
+    elif "manjaro" in current_distro.lower():
+        ascii = manjaro
+        ascii_color = Fore.GREEN
+    elif "nix" in current_distro.lower():
+        ascii = nixos
+        ascii_color = Fore.BLUE
+    elif "openbsd" in current_distro.lower():
+        ascii = openbsd
+        ascii_color = Fore.YELLOW
+    elif "raspbian" in current_distro.lower():
+        ascii = raspbian
+    elif "void" in current_distro.lower():
+        ascii = void
+        ascii_color = Fore.GREEN
+    elif "windows" == current_distro:
+        ascii = windows
+        ascii_color = Fore.BLUE
+    elif "guix" in current_distro.lower():
+        ascii = guix
+        ascii_color = Fore.YELLOW
+    elif "endeavour" in current_distro.lower():
+        ascii = endeavour
+        ascii_color = Fore.MAGENTA
+    else:
+        ascii = "\n"
+        ascii_color = Fore.RESET
+    return ascii, ascii_color
+
+
+ascii, ascii_color = get_ascii()
+
+
 # utlity functions for arrays
 def append(array, index, item):
     if index + 1 < len(array):
@@ -200,60 +264,6 @@ def insert_at_start(array, index, item):
     else:
         array.append(item)
 
-# ".lower()"" and "in" because im not confident i got these 100% correct
-if os.name == 'posix':
-	import distro
-	current_distro = distro.linux_distribution()[0]
-if "alpine" in current_distro.lower():
-    ascii = alpine
-    ascii_color = Fore.BLUE
-elif "arch" in current_distro.lower():
-    ascii = arch
-    ascii_color = Fore.BLUE
-elif "debian" in current_distro.lower():
-    ascii = debian
-    ascii_color = Fore.RED
-elif "fedora" in current_distro.lower():
-    ascii = fedora
-    ascii_color = Fore.MAGENTA
-elif "freebsd" in current_distro.lower():
-    ascii = freebsd
-    ascii_color = Fore.RED
-elif "gentoo" in current_distro.lower():
-    ascii = gentoo
-    ascii_color = Fore.MAGENTA
-elif "linux" in current_distro.lower():
-    ascii = linux
-    ascii_color = Fore.RESET
-elif "mac" in current_distro.lower():
-    ascii = macos
-    ascii_color = Fore.RESET
-elif "manjaro" in current_distro.lower():
-    ascii = manjaro
-    ascii_color = Fore.GREEN
-elif "nix" in current_distro.lower():
-    ascii = nixos
-    ascii_color = Fore.BLUE
-elif "openbsd" in current_distro.lower():
-    ascii = openbsd
-    ascii_color = Fore.YELLOW
-elif "raspbian" in current_distro.lower():
-    ascii = raspbian
-elif "void" in current_distro.lower():
-    ascii = void
-    ascii_color = Fore.GREEN
-elif "windows" == current_distro:
-     ascii = windows
-     ascii_color = Fore.BLUE
-elif "guix" in current_distro.lower():
-     ascii = guix
-     ascii_color = Fore.YELLOW
-elif "endeavour" in current_distro.lower():
-     ascii = endeavour
-     ascii_color = Fore.MAGENTA
-else:
-     ascii = "\n"
-     ascii_color = Fore.RESET
 
 # define important functions
 def package_count():
@@ -287,11 +297,11 @@ def package_count():
 def pcpu():
     global print_index
     try:
-       getcpu=os.popen("lscpu | grep 'Model name'").read()[33:-1]
-       append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {getcpu} ({cpu}%)")
-       print_index += 1
+        getcpu = os.popen("lscpu | grep 'Model name'").read()[33:-1]
+        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {getcpu} ({cpu}%)")
+        print_index += 1
     except Exception:
-       pass
+        pass
 
 
 def pdisk():
@@ -310,11 +320,13 @@ def pmemory():
     global print_index
     try:
         if used != 0:  # if its not 0 GiB then show GiB instead of MiB
-            append(to_print, print_index, ascii_color + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
+            append(to_print, print_index,
+                   ascii_color + "  " + Fore.WHITE + f" {used}GiB / {total}GiB ({percent_used}%)")
             print_index += 1
         elif used == 0:  # if its 0 GiB then show MiB instead of GiB
             used2 = ram.used // (1024 ** 2)
-            append(to_print, print_index, ascii_color + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)")
+            append(to_print, print_index,
+                   ascii_color + "  " + Fore.WHITE + f" {used2}MiB / {total}GiB ({percent_used}%)")
             print_index += 1
     except Exception:
         if used == 0:
@@ -329,11 +341,11 @@ def pmemory():
 def puserhost():
     global print_index
     try:
-         append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {username}@{uname.node}")
-         print_index += 1
+        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {username}@{uname.node}")
+        print_index += 1
     except Exception:
-         append(to_print, print_index, f"   {username}@{uname.node}")
-         print_index += 1
+        append(to_print, print_index, f"   {username}@{uname.node}")
+        print_index += 1
 
 
 def pos():
@@ -343,6 +355,7 @@ def pos():
         print_index += 1
         return
     elif os.name == 'posix':
+        import distro
         distribution = distro.linux_distribution()
         result = ' '.join(map(str, distribution))
     try:
@@ -380,7 +393,7 @@ def pwm():
         distro = ""
     try:
         if len(os.popen("whereis wmctrl").read()) > 8:
-            wm = os.popen("wmctrl -m | awk -F'Name: ' '{printf $2}'").read() 
+            wm = os.popen("wmctrl -m | awk -F'Name: ' '{printf $2}'").read()
             append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {wm}")
             print_index += 1
     except Exception:
@@ -389,14 +402,9 @@ def pwm():
 
 
 def pasciiart(current_distro=None):
-    if current_distro is None:
-        if os.name == 'posix':
-            import distro
-            current_distro = distro.linux_distribution()[0]
-        elif os.name == "nt":
-            current_distro = "windows"
-        else:
-            current_distro = ""
+    
+    ascii, ascii_color = get_ascii(current_distro)
+
     ascii_lines = ascii.splitlines()
     for i in range(max(len(to_print), len(ascii_lines))):
         if i < len(ascii_lines):
@@ -429,8 +437,8 @@ total = ram.total // (2 ** 30)
 totaldisk, useddisk, freedisk = shutil.disk_usage("/")
 diskpercent_used = round(useddisk / totaldisk * 100, 2)
 percent_used = round(ram.used / ram.total * 100, 2)
-# Yellowsink's super simple argument parsing. Who needs argparse when you have this???
 
+# arg parser code
 print_ascii = False
 selected_ascii = None
 
