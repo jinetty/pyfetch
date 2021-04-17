@@ -267,7 +267,7 @@ def package_count():
         current_distro = ""
     # apt, if Debian make it red
     if len(os.popen("whereis apt").read()) > 5:
-        packages = os.popen('apt list --installed 2> /dev/null | wc -l').read()[:-1]
+        packages = os.popen('apt-cache list --installed | wc -l').read()[:-1]
         append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  APT:  {packages}")
         print_index += 1
 
