@@ -287,11 +287,11 @@ def package_count():
 def pcpu():
     global print_index
     try:
-       append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {uname.processor} ({cpu}%)")
+       getcpu=os.popen("lscpu | grep 'Model name'").read()[33:-1]
+       append(to_print, print_index, ascii_color + " " + Fore.WHITE + f" {getcpu} ({cpu}%)")
        print_index += 1
     except Exception:
-        append(to_print, print_index, f"   {uname.processor} ({cpu}%)")
-        print_index += 1
+       pass
 
 
 def pdisk():
