@@ -229,6 +229,7 @@ def get_ascii(current_distro=None):
         ascii_color = Fore.YELLOW
     elif "raspbian" in current_distro.lower():
         ascii = raspbian
+        ascii_color = Fore.RED
     elif "void" in current_distro.lower():
         ascii = void
         ascii_color = Fore.GREEN
