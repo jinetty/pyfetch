@@ -374,14 +374,14 @@ def pterm():
 def pwm():
     global print_index
     if os.name == 'posix':
-        wm = os.popen("wmctrl -m | awk -F'Name: ' '{printf $2}'").read()
         import distro
         distro = distro.linux_distribution()
     else:
         distro = ""
     try:
         if len(os.popen("whereis wmctrl").read()) > 8:
-            append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {wm}")
+        wm = os.popen("wmctrl -m | awk -F'Name: ' '{printf $2}'").read() 
+        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {wm}")
             print_index += 1
     except Exception:
         append(to_print, print_index, f"   {wm}")
