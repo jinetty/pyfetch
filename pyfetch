@@ -380,8 +380,8 @@ def pwm():
         distro = ""
     try:
         if len(os.popen("whereis wmctrl").read()) > 8:
-        wm = os.popen("wmctrl -m | awk -F'Name: ' '{printf $2}'").read() 
-        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {wm}")
+            wm = os.popen("wmctrl -m | awk -F'Name: ' '{printf $2}'").read() 
+            append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {wm}")
             print_index += 1
     except Exception:
         append(to_print, print_index, f"   {wm}")
