@@ -370,7 +370,7 @@ def pterm():
             append(to_print, print_index, f"   {shell} {term}")
             print_index += 1
 
-# Todo: add whereis
+
 def pwm():
     global print_index
     if os.name == 'posix':
