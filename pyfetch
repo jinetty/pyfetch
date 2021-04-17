@@ -268,19 +268,19 @@ def package_count():
     # apt, if Debian make it red
     if len(os.popen("whereis apt").read()) > 5:
         packages = os.popen('apt list --installed | wc -l').read()[:-1]
-        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f" APT:  {packages}")
+        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  APT:  {packages}")
         print_index += 1
 
     # emerge, if Gentoo make it purple
     if len(os.popen("whereis emerge").read()) > 8:
         packages = os.popen("ls -d /var/db/pkg/*/* | wc -l | awk '{printf $1 }'").read()
-        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f" Emerge:  {packages}")
+        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  Emerge:  {packages}")
         print_index += 1
 
     # pacman, if Arch make it blue
     if len(os.popen("whereis pacman").read()) > 8:
         packages = os.popen('pacman -Q | wc -l').read()[:-1]
-        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f" Pacman:  {packages}")
+        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  Pacman:  {packages}")
         print_index += 1
 
 
@@ -288,7 +288,7 @@ def pcpu():
     global print_index
     try:
        getcpu=os.popen("lscpu | grep 'Model name'").read()[33:-1]
-       append(to_print, print_index, ascii_color + " " + Fore.WHITE + f" {getcpu} ({cpu}%)")
+       append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {getcpu} ({cpu}%)")
        print_index += 1
     except Exception:
        pass
@@ -364,7 +364,7 @@ def pterm():
         else:
             current_distro = ""
         try:
-            append(to_print, print_index, ascii_color + "  " + Fore.WHITE + f"  {shell} {term}")
+            append(to_print, print_index, ascii_color + "  " + Fore.WHITE + f" {shell} {term}")
             print_index += 1
         except Exception:
             append(to_print, print_index, f"   {shell} {term}")
