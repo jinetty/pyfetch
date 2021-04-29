@@ -1,5 +1,5 @@
 <p align="left">
-<img src="./assets/pyfetch.png">
+<img src="./preview/pyfetch.png">
 </p>
 
 # pyfetch
