@@ -309,11 +309,11 @@ def pdisk():
     global print_index
     try:
         append(to_print, print_index,
-               ascii_color + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+               ascii_color + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {totaldisk // (2 ** 30)}GiB ({diskpercent_used}%)")
         print_index += 1
     except Exception:
         append(to_print, print_index,
-               f"   {useddisk // (2 ** 30)}GiB / {freedisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+               f"   {useddisk // (2 ** 30)}GiB / {totaldisk // (2 ** 30)}GiB ({diskpercent_used}%)")
         print_index += 1
 
 
