@@ -23,7 +23,7 @@ args = sys.argv[1:]
 # if needed print the help!
 if "-h" in args or "--help" in args:
     # enjoy this lovely table made out of entirely unicode chars
-    print('''pyfetch - a lighter and faster neofetch.
+    print('''pyfetch - Stylish and simple fetch for your terminal that is customizable, and fast.
 ╔═════╦═══════════════════╦════════════════════════════════════════════════════╗
 ║ -c  ║ --cpu             ║ CPU info & usage                                   ║
 ╠═════╬═══════════════════╬════════════════════════════════════════════════════╣
