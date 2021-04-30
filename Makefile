@@ -1,4 +1,4 @@
-SCRIPT= pyfetch
+SCRIPT= pyfetch.py
 EXEC= pyfetch
 SHORTEXEC = pyf
 
