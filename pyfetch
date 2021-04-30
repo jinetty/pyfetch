@@ -31,6 +31,8 @@ if "-h" in args or "--help" in args:
 ╠═════╬═══════════════════╬════════════════════════════════════════════════════╣
 ║ -m  ║ --memory          ║ RAM usage                                          ║
 ╠═════╬═══════════════════╬════════════════════════════════════════════════════╣
+║ -u  ║ --uptime          ║ Uptime                                             ║
+╠═════╬═══════════════════╬════════════════════════════════════════════════════╣
 ║ -uh ║ --userhostname    ║ user@hostname                                      ║
 ╠═════╬═══════════════════╬════════════════════════════════════════════════════╣
 ║ -p  ║ --packages        ║ Installed package count                            ║
@@ -304,6 +306,14 @@ def pcpu():
     except Exception:
         pass
 
+def puptime():
+    global print_index
+    try:
+        getuptime = os.popen("uptime -p").read()[3:-1]
+        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {getuptime}")
+        print_index += 1
+    except Exception:
+        pass
 
 def pdisk():
     global print_index
@@ -423,6 +433,7 @@ def noascii():
     pcpu()
     pmemory()
     pterm()
+    puptime()
     pwm()
     pos()
     package_count()
@@ -463,6 +474,8 @@ while i < len(args):
         pterm()
     elif arg == "-wm" or arg == "--windowmanager":
         pwm()
+    elif arg == "-u" or arg == "--uptime":
+        puptime()
     elif arg == "-a" or arg == "--asciiart":
         if i + 1 < len(args) and not args[i + 1].startswith("-"):
             selected_ascii = args[i + 1]
@@ -481,6 +494,7 @@ if len(args) == 0:
     pcpu()
     pmemory()
     pterm()
+    puptime()
     pwm()
     pos()
     package_count()
