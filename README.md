@@ -1,6 +1,5 @@
-<p align="left">
-<img src="./preview/pyfetch.png">
-</p>
+<img src="https://raw.githubusercontent.com/kreat0/pyfetch/master/preview/pyfetch.png" alt="Screenshot" />
+
 
 # pyfetch
 Stylish and simple fetch for your terminal that is customizable, and fast.
