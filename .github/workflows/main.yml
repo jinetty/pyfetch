@@ -26,7 +26,6 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
           files: |
-            ./pyfetch
             ./pyfetch.exe
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
