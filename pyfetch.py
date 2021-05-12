@@ -421,7 +421,9 @@ def pasciiart(current_distro=None):
         if i < len(ascii_lines):
             insert_at_start(to_print, i, ascii_color + ascii_lines[i] + " " + Fore.RESET)
         else:
-            padding = " "*ascii_lines[0]
+            padding = ""
+            for _ in ascii_lines[0]:
+                padding += " "
             insert_at_start(to_print, i, padding + " ")
 
 
