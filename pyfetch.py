@@ -454,9 +454,8 @@ percent_used = round(ram.used / ram.total * 100, 2)
 print_ascii = False
 selected_ascii = None
 
-# my shitty recreation of a for from a sensible lang like C where for loops arent just foreach
-i = 0
-while i < len(args):
+#From https://www.reddit.com/r/unixporn/comments/najxnu/oc_i_was_bored_so_i_made_a_fetch_tool_in_python/gxuk7fs?utm_source=share&utm_medium=web2x&context=3
+for i in range(len(args)):
     arg = args[i]
     if arg == "-c" or arg == "--cpu":
         pcpu()
