@@ -220,7 +220,7 @@ def get_ascii(current_distro=None):
     elif "mac" in current_distro.lower():
         ascii = macos
         ascii_color = Fore.RESET
-    elif "manjaro" in current_distro.lower():
+    elif "Manjaro" in current_distro.lower():
         ascii = manjaro
         ascii_color = Fore.GREEN
     elif "nix" in current_distro.lower():
