@@ -280,7 +280,7 @@ def package_count():
         current_distro = ""
     # apt, if Debian make it red
     if len(os.popen("whereis apt").read()) > 5:
-        packages = os.popen('apt list --installed 2> /dev/null | wc -l').read()[:-1]
+        packages = os.popen('apt list --installed 2> /dev/null | wc -l').read().strip()
         append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  APT:  {packages}")
         print_index += 1
 
@@ -292,7 +292,7 @@ def package_count():
 
     # pacman, if Arch make it blue
     if len(os.popen("whereis pacman").read()) > 8:
-        packages = os.popen('pacman -Q | wc -l').read()[:-1]
+        packages = os.popen('pacman -Q | wc -l').read().strip()
         append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  Pacman:  {packages}")
         print_index += 1
 
@@ -300,7 +300,7 @@ def package_count():
 def pcpu():
     global print_index
     try:
-        getcpu = os.popen("lscpu | grep 'Model name'").read()[33:-1]
+        getcpu = os.popen("lscpu | grep 'Model name'").read().split(":")[1].strip()
         append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {getcpu} ({cpu}%)")
         print_index += 1
     except Exception:
@@ -309,7 +309,7 @@ def pcpu():
 def puptime():
     global print_index
     try:
-        getuptime = os.popen("uptime -p").read()[3:-1]
+        getuptime = " ".join(os.popen("uptime -p").read().split()[1:]).strip()
         append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {getuptime}")
         print_index += 1
     except Exception:
@@ -320,10 +320,10 @@ def pdisk():
     try:
         append(to_print, print_index,
                ascii_color + " " + Fore.WHITE + f"  {useddisk // (2 ** 30)}GiB / {totaldisk // (2 ** 30)}GiB ({diskpercent_used}%)")
-        print_index += 1
     except Exception:
         append(to_print, print_index,
                f"   {useddisk // (2 ** 30)}GiB / {totaldisk // (2 ** 30)}GiB ({diskpercent_used}%)")
+    finally:
         print_index += 1
 
 
@@ -353,9 +353,9 @@ def puserhost():
     global print_index
     try:
         append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {username}@{uname.node}")
-        print_index += 1
     except Exception:
         append(to_print, print_index, f"   {username}@{uname.node}")
+    finally:
         print_index += 1
 
 
@@ -371,9 +371,9 @@ def pos():
         result = ' '.join(map(str, distribution))
     try:
         append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {result} {uname.release}")
-        print_index += 1
     except Exception:
         append(to_print, print_index, f"  {result} {uname.release}")
+    finally:
         print_index += 1
 
 
@@ -389,9 +389,9 @@ def pterm():
             current_distro = ""
         try:
             append(to_print, print_index, ascii_color + "  " + Fore.WHITE + f" {shell} {term}")
-            print_index += 1
         except Exception:
             append(to_print, print_index, f"   {shell} {term}")
+        finally:
             print_index += 1
 
 
@@ -421,9 +421,7 @@ def pasciiart(current_distro=None):
         if i < len(ascii_lines):
             insert_at_start(to_print, i, ascii_color + ascii_lines[i] + " " + Fore.RESET)
         else:
-            padding = ""
-            for _ in ascii_lines[0]:
-                padding += " "
+            padding = " "*ascii_lines[0]
             insert_at_start(to_print, i, padding + " ")
 
 
