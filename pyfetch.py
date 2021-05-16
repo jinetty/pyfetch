@@ -2,16 +2,16 @@
 # ________  ___    ___ ________ _______  _________  ________  ___  ___
 # |\   __  \|\  \  /  /|\  _____\\  ___ \|\___   ___\\   ____\|\  \|\  \
 # \ \  \|\  \ \  \/  / | \  \__/\ \   __/\|___ \  \_\ \  \___|\ \  \\\  \
-# \ \   ____\ \    / / \ \   __\\ \  \_|/__  \ \  \ \ \  \    \ \   __  \
-#  \ \  \___|\/  /  /   \ \  \_| \ \  \_|\ \  \ \  \ \ \  \____\ \  \ \  \
-#   \ \__\ __/  / /      \ \__\   \ \_______\  \ \__\ \ \_______\ \__\ \__\
-#    \|__||\___/ /        \|__|    \|_______|   \|__|  \|_______|\|__|\|__|
+#  \ \   ____\ \    / / \ \   __\\ \  \_|/__  \ \  \ \ \  \    \ \   __  \
+#   \ \  \___|\/  /  /   \ \  \_| \ \  \_|\ \  \ \  \ \ \  \____\ \  \ \  \
+#    \ \__\ __/  / /      \ \__\   \ \_______\  \ \__\ \ \_______\ \__\ \__\
+#     \|__||\___/ /        \|__|    \|_______|   \|__|  \|_______|\|__|\|__|
 #         \|___|/
 # Made by Kreato
 # Licensed Under GPL3-Or-Later
 
 # import stuffs
-import sys, platform, psutil, os, getpass, shutil
+import sys, platform, psutil, os, getpass, shutil, time
 from colorama import init, Fore, Back, Style
 
 # Setup colorama
@@ -278,6 +278,7 @@ def package_count():
         current_distro = distro.linux_distribution()
     else:
         current_distro = ""
+    
     # apt, if Debian make it red
     if len(os.popen("whereis apt").read()) > 5:
         packages = os.popen('apt list --installed 2> /dev/null | wc -l').read().strip()
@@ -300,7 +301,7 @@ def package_count():
 def pcpu():
     global print_index
     try:
-        getcpu = os.popen("lscpu | grep 'Model name'").read().split(":")[1].strip()
+        getcpu = platform.processor()
         append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {getcpu} ({cpu}%)")
         print_index += 1
     except Exception:
@@ -309,9 +310,16 @@ def pcpu():
 def puptime():
     global print_index
     try:
-        getuptime = " ".join(os.popen("uptime -p").read().split()[1:]).strip()
-        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {getuptime}")
-        print_index += 1
+        getuptime = time.time() - psutil.boot_time()
+        if getuptime // 3600 != 0.0:  # if its not 0 hours show hours instead of minutes
+            append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {getuptime // 3600} hours")
+            print_index += 1
+        elif getuptime // 3600 == 0.0: # if its 0 hours show minutes instead of hours
+            append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {getuptime // 60} minutes")
+            print_index += 1
+        elif getuptime // 60 == 0.0: # if its 0 minutes show seconds instead
+            append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {round(getuptime)} minutes")
+            print_index += 1
     except Exception:
         pass
 
