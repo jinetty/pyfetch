@@ -168,6 +168,13 @@ raspbian = '''  __  __
  (_(__)_) 
    (__)   '''
 
+ubuntu = '''         _  
+     ---(_) 
+ _/  ---  \ 
+(_) |   |   
+  \  --- _/ 
+     ---(_) '''
+
 void = '''    _______    
     \\_____ \\`- 
  /\\   ___ \\`- \\
@@ -235,6 +242,9 @@ def get_ascii(current_distro=None):
     elif "void" in current_distro.lower():
         ascii = void
         ascii_color = Fore.GREEN
+    elif "ubuntu" in current_distro.lower():
+        ascii = ubuntu
+        ascii_color = Fore.RED
     elif "windows" == current_distro:
         ascii = windows
         ascii_color = Fore.BLUE
@@ -276,26 +286,25 @@ def package_count():
     if os.name == 'posix':
         import distro
         current_distro = distro.linux_distribution()
+        # apt, if Debian make it red
+        if len(os.popen("whereis apt").read()) > 5:
+            packages = os.popen('dpkg-query -l | wc -l').read().strip()
+            append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  APT:  {packages}")
+            print_index += 1
+
+        # emerge, if Gentoo make it purple
+        if len(os.popen("whereis emerge").read()) > 8:
+            packages = os.popen("ls -d /var/db/pkg/*/* | wc -l | awk '{printf $1 }'").read()
+            append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  Emerge:  {packages}")
+            print_index += 1
+
+        # pacman, if Arch make it blue
+        if len(os.popen("whereis pacman").read()) > 8:
+            packages = os.popen('pacman -Q | wc -l').read().strip()
+            append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  Pacman:  {packages}")
+            print_index += 1
     else:
         current_distro = ""
-    
-    # apt, if Debian make it red
-    if len(os.popen("whereis apt").read()) > 5:
-        packages = os.popen('apt list --installed 2> /dev/null | wc -l').read().strip()
-        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  APT:  {packages}")
-        print_index += 1
-
-    # emerge, if Gentoo make it purple
-    if len(os.popen("whereis emerge").read()) > 8:
-        packages = os.popen("ls -d /var/db/pkg/*/* | wc -l | awk '{printf $1 }'").read()
-        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  Emerge:  {packages}")
-        print_index += 1
-
-    # pacman, if Arch make it blue
-    if len(os.popen("whereis pacman").read()) > 8:
-        packages = os.popen('pacman -Q | wc -l').read().strip()
-        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  Pacman:  {packages}")
-        print_index += 1
 
 
 def pcpu():
@@ -370,7 +379,7 @@ def puserhost():
 def pos():
     global print_index
     if os.name == 'nt':
-        append(to_print, print_index, f"   {uname.system} {uname.release}")
+        append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {uname.system} {uname.release}")
         print_index += 1
         return
     elif os.name == 'posix':
@@ -411,7 +420,7 @@ def pwm():
     else:
         distro = ""
     try:
-        if len(os.popen("whereis wmctrl").read()) > 8:
+        if len(os.popen("whereis wmctrl").read()) > 8 and os.name == 'posix':
             wm = os.popen("wmctrl -m | awk -F'Name: ' '{printf $2}'").read()
             append(to_print, print_index, ascii_color + " " + Fore.WHITE + f"  {wm}")
             print_index += 1
